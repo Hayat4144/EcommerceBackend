@@ -1,5 +1,6 @@
 const category_model = require('../model/category_model')
 
+// get all categories and subcategories
 exports.Get_Categories = async (req, res) => {
     try {
         await category_model.find()
