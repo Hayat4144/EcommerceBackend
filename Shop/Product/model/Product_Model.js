@@ -1,12 +1,15 @@
 const mongoose = require('mongoose')
 const category_model = require('../../Category/model/category_model')
+require('mongoose-type-url')
+
+
 const ProductSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true,
         max:20
     },
-    decription:{
+    description:{
         type:String,
         required:true,
         max:100
@@ -16,10 +19,10 @@ const ProductSchema = new mongoose.Schema({
         required:true,
     },
     image:{
-        type:URL,
+        type: mongoose.SchemaTypes.Url,
         required:true
     },
-    catetogry:{
+    category:{
         type: mongoose.SchemaTypes.ObjectId,
         required:true,
 
