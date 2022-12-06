@@ -1,4 +1,4 @@
-const SellerModel = require('../model/SellerModel')
+const SellerModel = require('../../model/SellerModel')
 const bcrypt = require('bcrypt')
 
 exports.SignupSeller = async (req, res) => {
