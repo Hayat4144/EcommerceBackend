@@ -1,4 +1,4 @@
-const Seller_Model = require('../model/SellerModel')
+const Seller_Model = require('../../model/SellerModel')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const ErrorHandler = require('../../../utils/ErrorHandler')
@@ -17,7 +17,7 @@ exports.SigninSeller = async (req, res, next) => {
 
             // signinoptions for jwt sign
             var signOptions = {
-                expiresIn: "5m",
+                expiresIn: "12d",
                 algorithm: "ES256"
             };
 
@@ -35,7 +35,7 @@ exports.SigninSeller = async (req, res, next) => {
                 if (!err) {
                     const token = jwt.sign(payload, data, signOptions);
                     res.cookie('token', token, {
-                        expires: new Date(Date.now() + 300000), // for 10 days in production only 864000000
+                        expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
                         SameSite: 'none',
                     })
                     return res.status(200).send({ data: 'Login Successfully.' })
