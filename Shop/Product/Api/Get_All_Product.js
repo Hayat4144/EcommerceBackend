@@ -2,7 +2,7 @@ const Product_Model = require('../model/Product_Model')
 
 exports.Get_All_Product = async(req,res)=>{
     try {
-        await Product_Model.find()
+        await Product_Model.find({seller:req.user_id})
         .exec((error,doc)=>{
             return error ? res.status(400).json({error}) : res.status(200).json({doc})
         })

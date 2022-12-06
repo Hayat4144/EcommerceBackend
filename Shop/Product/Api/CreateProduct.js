@@ -8,8 +8,10 @@ exports.CreateProduct = async(req,res)=>{
             price,
             image,
             category,
-            brand
+            brand,
+            seller:req.user_id
         },(err,doc)=>{
+            console.log(doc.seller)
             return !err ? res.status(200).json({doc}) : res.status(400).json({err})
         })
     } catch (error) {
