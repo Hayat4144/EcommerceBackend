@@ -11,7 +11,6 @@ exports.SigninSeller = async (req, res, next) => {
         const { email, password } = req.body;
         const IsSellerExist = await Seller_Model.findOne({ email: email });
         if (!IsSellerExist) {
-            // return res.status(400).send('not found')
             return next(new ErrorHandler('Sorry, Invalid/Credentials', 400))
         }
         if (IsSellerExist && (await bcrypt.compare(password, IsSellerExist.password))) {
