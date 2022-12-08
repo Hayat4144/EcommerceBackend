@@ -25,6 +25,7 @@ const ProductSchema = new mongoose.Schema({
     category: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true,
+        ref:'Category'
 
     },
     brand: {
@@ -34,7 +35,7 @@ const ProductSchema = new mongoose.Schema({
     },
     seller: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Seller',
+        ref: 'seller',
         required: true
     }
 },
