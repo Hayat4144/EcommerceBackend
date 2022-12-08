@@ -22,9 +22,6 @@ const SellerAuthMiddleware = (req, res, next) => {
                         if (err) {
                             return res.status(400).json({ error: "Sorry you are not authorized." })
                         }
-                        // console.log(doc)
-                        console.log(doc._id)
-                        console.log('hi')
                         req.user_id = doc._id ;
                         next();
                     })
