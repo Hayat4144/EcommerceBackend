@@ -6,6 +6,7 @@ const ErrorHandler = require('../utils/ErrorHandler')
 
 const SellerAuthMiddleware = (req, res, next) => {
     const jwt_token = req.cookies.token;
+    // console.log(jwt_token)
     if (jwt_token === undefined) {
         return res.status(401).json({ error: "you are unauthorized." })
     }
@@ -22,11 +23,20 @@ const SellerAuthMiddleware = (req, res, next) => {
                         if (err) {
                             return res.status(400).json({ error: "Sorry you are not authorized." })
                         }
-                        req.user_id = doc._id ;
-                        next();
+                        else {
+                            if (doc === null) {
+                                next(new ErrorHandler('Sorry, you are trying to access private resources which are not allowed. you may be not a seller.', 400))
+                            }
+                            else {
+                                req.user_id = doc._id;
+                                next();
+                            }
+
+                        }
+
                     })
             }
-            
+
         }
         else {
             console.log(err)

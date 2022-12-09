@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs')
 const Seller_Model = require('../Users/Model/UserModel');
+const ErrorHandler = require('../utils/ErrorHandler')
 
 
 const UserAuthMiddleware = (req, res, next) => {
@@ -21,8 +22,14 @@ const UserAuthMiddleware = (req, res, next) => {
                         if (err) {
                             return res.status(400).json({ error: "Sorry you are not authorized." })
                         }
-                        req.user_id = doc._id;
-                        next();
+                        if (doc === null) {
+                            next(new ErrorHandler('Sorry, you are trying to access private resources which are not allowed. you may be not a normal user.', 400))
+                        }
+                        else {
+                            req.user_id = doc._id;
+                            next();
+                        }
+
                     })
             }
 
