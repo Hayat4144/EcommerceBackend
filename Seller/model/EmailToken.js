@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const EmailTokenShema = new mongoose.SchemaType({
+const EmailTokenShema = new mongoose.Schema({
     seller: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'seller',
@@ -23,4 +23,4 @@ const EmailTokenShema = new mongoose.SchemaType({
 
 const EmailTokenModel = new mongoose.model('Token', EmailTokenShema)
 
-module.exports = EmailTokenModel ;
+module.exports = EmailTokenModel;
