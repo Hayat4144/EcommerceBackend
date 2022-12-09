@@ -21,6 +21,6 @@ const EmailTokenShema = new mongoose.Schema({
     }
 )
 
-const EmailTokenModel = new mongoose.model('Token', EmailTokenShema)
+const EmailTokenModel = new mongoose.model('SellerEmailToken', EmailTokenShema)
 
 module.exports = EmailTokenModel;
