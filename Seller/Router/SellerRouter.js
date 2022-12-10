@@ -7,6 +7,11 @@ const { ResetPasswordRequest } = require('../auth/ResetPasswordRequest');
 const { VerifySellerPasswordReset } = require('../auth/VerifyPasswordReset');
 const { EmailChangeRequest } = require('../auth/EmailChangeRequest');
 const { VerifySellerEmailChange } = require('../auth/VerifyEmailChange');
+const { CreateSellerAddress } = require('../Address/CreateSellerAddress');
+const { UpdateSellerAddress } = require('../Address/UpdateSellerAddres');
+const { ReadSelerAddress } = require('../Address/ReadSellerAddress');
+
+
 const SellerRouter = epxress.Router();
 
 // 1. Signup for Seller route
@@ -31,5 +36,14 @@ SellerRouter.post('/v4/api/seller/email/change/request', SellerAuthMiddleware, E
 
 // 6 verify email change token
 SellerRouter.put('/v4/api/seller/email/change/done', SellerAuthMiddleware, VerifySellerEmailChange)
+
+
+// 7 user address create 
+SellerRouter.post('/v3/api/seller/create/address', SellerAuthMiddleware, CreateSellerAddress)
+
+SellerRouter.get('/v3/api/seller/read/address', SellerAuthMiddleware, ReadSelerAddress)
+
+
+SellerRouter.put('/v3/api/seller/update/address', SellerAuthMiddleware, UpdateSellerAddress)
 
 module.exports = SellerRouter;
