@@ -10,6 +10,8 @@ const { VerifySellerEmailChange } = require('../auth/VerifyEmailChange');
 const { CreateSellerAddress } = require('../Address/CreateSellerAddress');
 const { UpdateSellerAddress } = require('../Address/UpdateSellerAddres');
 const { ReadSelerAddress } = require('../Address/ReadSellerAddress');
+const singalfileupload = require('../../utils/multe_singal');
+const { SellerProfileImage } = require('../Profile/Upload_Profile_Pic');
 
 
 const SellerRouter = epxress.Router();
@@ -45,5 +47,7 @@ SellerRouter.get('/v3/api/seller/read/address', SellerAuthMiddleware, ReadSelerA
 
 
 SellerRouter.put('/v3/api/seller/update/address', SellerAuthMiddleware, UpdateSellerAddress)
+
+SellerRouter.post('/v3/api/seller/profile/upload', singalfileupload, SellerAuthMiddleware, SellerProfileImage)
 
 module.exports = SellerRouter;
