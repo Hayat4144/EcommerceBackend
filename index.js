@@ -9,7 +9,10 @@ const Product_router = require('./Shop/Product/Router/Product_Router')
 const Seller_router = require('./Seller/Router/SellerRouter');
 const { ErrorMiddleware } = require('./Middleware/ErrorMiddleware');
 const UserRouter = require('./Users/Router/UserRouter');
+const { CloudinaryConfiguration } = require('./Config/Cloudinary_Config');
 
+// configure clodinay
+CloudinaryConfiguration();
 
 
 //connect database 
