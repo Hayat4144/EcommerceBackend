@@ -7,9 +7,11 @@ const { UserSignin } = require('../Auth/UserSignin');
 const { UserSignup } = require('../Auth/UserSignup');
 const { VerifyEmailChange } = require('../Auth/VerfiyEmailChange');
 const { VerifyPasswordChange } = require('../Auth/VerifyPasswordReset');
-const {CreateUserAddress} = require('../Address/api/CreateAddress');
-const {ReadUserAddress} = require('../Address/api/ReadUserAddress');
-const {UpdateUserAddress} = require('../Address/api/UpdateUserAddress');
+const { CreateUserAddress } = require('../Address/api/CreateAddress');
+const { ReadUserAddress } = require('../Address/api/ReadUserAddress');
+const { UpdateUserAddress } = require('../Address/api/UpdateUserAddress');
+const { UserProfileImage } = require('../Profile/userprofile_upload');
+const singalfileupload = require('../../utils/multe_singal');
 const UserRouter = express.Router();
 
 // User router
@@ -36,10 +38,14 @@ UserRouter.post('/v3/api/user/change/email/request', UserAuthMiddleware, UserEma
 UserRouter.put('/v3/api/user/change/email/verify/done', UserAuthMiddleware, VerifyEmailChange)
 
 // 6 user address create 
-UserRouter.post('/v3/api/user/create/address',UserAuthMiddleware,CreateUserAddress)
+UserRouter.post('/v3/api/user/create/address', UserAuthMiddleware, CreateUserAddress)
 
-UserRouter.get('/v3/api/user/read/address',UserAuthMiddleware,ReadUserAddress)
+UserRouter.get('/v3/api/user/read/address', UserAuthMiddleware, ReadUserAddress)
 
 
-UserRouter.put('/v3/api/user/update/address',UserAuthMiddleware,UpdateUserAddress)
+UserRouter.put('/v3/api/user/update/address', UserAuthMiddleware, UpdateUserAddress)
+
+UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, singalfileupload, UserProfileImage)
+
+
 module.exports = UserRouter;
