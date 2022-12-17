@@ -6,7 +6,14 @@ exports.UserValidate = [
         .isStrongPassword()
         .trim()
         .escape()
-        .withMessage('password must be contain symbol,number,capital and small letter.'),
+        .withMessage('password must be contain symbol,number,capital and small letter.')
+        .custom((value, { req, loc, path }) => {
+            if (value !== req.body.confirmpassword) {
+                throw new Error("passwords doesn't match");
+            } else {
+                return value;
+            }
+        }),
     check('name')
         .isLength({ min: 4, max: 15 })
         .trim()
@@ -16,7 +23,7 @@ exports.UserValidate = [
         .isEmail()
         .trim()
         .escape()
-        .withMessage('Invalid email'),
+        .withMessage('Invalid email')
 ]
 
 exports.User_Validation_Error = (req, res, next) => {
