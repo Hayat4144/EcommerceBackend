@@ -7,7 +7,7 @@ exports.UserValidate = [
         .trim()
         .escape()
         .withMessage('password must be contain symbol,number,capital and small letter.')
-        .custom((value, { req, loc, path }) => {
+        .custom((value, { req }) => {
             if (value !== req.body.confirmpassword) {
                 throw new Error("passwords doesn't match");
             } else {

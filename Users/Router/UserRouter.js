@@ -14,6 +14,9 @@ const { UserProfileImage } = require('../Profile/userprofile_upload');
 const singalfileupload = require('../../utils/multe_singal');
 const { AddressValidation, Address_validation_Error } = require('../Validation/AddressValidations');
 const { UserValidate, User_Validation_Error } = require('../Validation/UserValidation');
+const { UserEmailValidate, User_Email_Validation_Error } = require('../Validation/UserEmailValidation');
+const { ConfirmEmailValidate, Confirm_Email_Validation_Error } = require('../Validation/EmailConfirmValidate');
+const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../../Seller/validation/ConfirmPasswordValidation');
 
 
 
@@ -29,29 +32,37 @@ UserRouter.post('/v3/api/user/signup', UserValidate, User_Validation_Error, User
 UserRouter.post('/v3/api/user/signin', UserSignin)
 
 // 3 Change Password for user 
-UserRouter.put('/v3/api/user/change/password', UserAuthMiddleware, UserChangePassword)
+UserRouter.put('/v3/api/user/change/password', ConfrimPasswordValidate,
+    Confirm_Password_Validation_Error, UserAuthMiddleware, UserChangePassword)
 
 // Reset password request
-UserRouter.post('/v3/api/user/reset/password/request', UserAuthMiddleware, UserPasswordReset)
+UserRouter.post('/v3/api/user/reset/password/request', ConfrimPasswordValidate,
+    Confirm_Password_Validation_Error, UserAuthMiddleware, UserPasswordReset)
 
 // Verify reset password token 
-UserRouter.put('/v3/api/user/reset/password/verify/done', UserAuthMiddleware, VerifyPasswordChange)
+UserRouter.put('/v3/api/user/reset/password/verify/done', ConfrimPasswordValidate,
+    Confirm_Password_Validation_Error, UserAuthMiddleware, VerifyPasswordChange)
 
 // 4. change user email step 1 
-UserRouter.post('/v3/api/user/change/email/request', UserAuthMiddleware, UserEmailChange)
+UserRouter.post('/v3/api/user/change/email/request', UserEmailValidate,
+    User_Email_Validation_Error, UserAuthMiddleware, UserEmailChange)
 
 // 5 verify email token and update the email
-UserRouter.put('/v3/api/user/change/email/verify/done', UserAuthMiddleware, VerifyEmailChange)
+UserRouter.put('/v3/api/user/change/email/verify/done', ConfirmEmailValidate,
+    Confirm_Email_Validation_Error, UserAuthMiddleware, VerifyEmailChange)
 
 // 6 user address create 
-UserRouter.post('/v3/api/user/create/address', AddressValidation, Address_validation_Error, UserAuthMiddleware, CreateUserAddress)
+UserRouter.post('/v3/api/user/create/address', AddressValidation,
+    Address_validation_Error, UserAuthMiddleware, CreateUserAddress)
 
 UserRouter.get('/v3/api/user/read/address', UserAuthMiddleware, ReadUserAddress)
 
 
-UserRouter.put('/v3/api/user/update/address', UserAuthMiddleware, UpdateUserAddress)
+UserRouter.put('/v3/api/user/update/address', AddressValidation, Address_validation_Error,
+    UserAuthMiddleware, UpdateUserAddress)
 
-UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, singalfileupload, UserProfileImage)
+UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, singalfileupload,
+    UserProfileImage)
 
 
 module.exports = UserRouter;
