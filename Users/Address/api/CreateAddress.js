@@ -24,7 +24,7 @@ exports.CreateUserAddress = AsyncFunc(async (req, res, next) => {
 			}
 
 		} else {
-			return res.status(200).json({ doc });
+			return res.status(200).json({ data: "Your address has been created successfully.", doc });
 		}
 	})
 })
