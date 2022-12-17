@@ -14,6 +14,9 @@ const singalfileupload = require('../../utils/multe_singal');
 const { SellerProfileImage } = require('../Profile/Upload_Profile_Pic');
 const { SellerValidate, Seller_Validation_Error } = require('../validation/SellerValidation');
 const { Seller_AddressValidation, Seller_Address_validation_Error } = require('../validation/SelllerAddressValidation');
+const { SellerEmailValidate, Seller_Email_Validation_Error } = require('../validation/SellerEmailValidation');
+const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../validation/ConfirmPasswordValidation');
+const { SellerConfirmEmailValidate, Seller_Confirm_Email_Validation_Error } = require('../validation/SellerConfrimEmail');
 
 
 const SellerRouter = epxress.Router();
@@ -25,21 +28,28 @@ SellerRouter.post('/v4/api/seller/signup', SellerValidate, Seller_Validation_Err
 SellerRouter.post('/v4/api/seller/signin', SigninSeller)
 
 // 3 change password for seller
-SellerRouter.put('/v4/api/seller/change/password', SellerAuthMiddleware, ChangePassword)
+SellerRouter.put('/v4/api/seller/change/password', ConfrimPasswordValidate,
+    Confirm_Password_Validation_Error, SellerAuthMiddleware, ChangePassword)
 
 // 4 Reset password request
-SellerRouter.post('/v4/api/seller/reset/password/request', SellerAuthMiddleware, ResetPasswordRequest)
+SellerRouter.post('/v4/api/seller/reset/password/request', SellerEmailValidate,
+    Seller_Email_Validation_Error, SellerAuthMiddleware, ResetPasswordRequest)
 
 // 4 Verify password reset 
-SellerRouter.put('/v4/api/seller/password/reset/done', SellerAuthMiddleware, VerifySellerPasswordReset)
+SellerRouter.put('/v4/api/seller/password/reset/done',
+    ConfrimPasswordValidate, Confirm_Password_Validation_Error,
+    SellerAuthMiddleware, VerifySellerPasswordReset)
 
 
 //  5 email change request 
-SellerRouter.post('/v4/api/seller/email/change/request', SellerAuthMiddleware, EmailChangeRequest)
+SellerRouter.post('/v4/api/seller/email/change/request', SellerEmailValidate,
+    Seller_Email_Validation_Error,
+    SellerAuthMiddleware, EmailChangeRequest)
 
 
 // 6 verify email change token
-SellerRouter.put('/v4/api/seller/email/change/done', SellerAuthMiddleware, VerifySellerEmailChange)
+SellerRouter.put('/v4/api/seller/email/change/done', SellerConfirmEmailValidate,
+    Seller_Confirm_Email_Validation_Error, SellerAuthMiddleware, VerifySellerEmailChange)
 
 
 // 7 user address create 
@@ -49,7 +59,8 @@ SellerRouter.post('/v3/api/seller/create/address', Seller_AddressValidation,
 SellerRouter.get('/v3/api/seller/read/address', SellerAuthMiddleware, ReadSelerAddress)
 
 
-SellerRouter.put('/v3/api/seller/update/address', SellerAuthMiddleware, UpdateSellerAddress)
+SellerRouter.put('/v3/api/seller/update/address',
+    Seller_AddressValidation, Seller_Address_validation_Error, SellerAuthMiddleware, UpdateSellerAddress)
 
 SellerRouter.post('/v3/api/seller/profile/upload', singalfileupload, SellerAuthMiddleware, SellerProfileImage)
 
