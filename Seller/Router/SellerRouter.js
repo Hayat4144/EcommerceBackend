@@ -12,12 +12,14 @@ const { UpdateSellerAddress } = require('../Address/UpdateSellerAddres');
 const { ReadSelerAddress } = require('../Address/ReadSellerAddress');
 const singalfileupload = require('../../utils/multe_singal');
 const { SellerProfileImage } = require('../Profile/Upload_Profile_Pic');
+const { SellerValidate, Seller_Validation_Error } = require('../validation/SellerValidation');
+const { Seller_AddressValidation, Seller_Address_validation_Error } = require('../validation/SelllerAddressValidation');
 
 
 const SellerRouter = epxress.Router();
 
 // 1. Signup for Seller route
-SellerRouter.post('/v4/api/seller/signup', SignupSeller)
+SellerRouter.post('/v4/api/seller/signup', SellerValidate, Seller_Validation_Error, SignupSeller)
 
 // 2 Signin for seller route
 SellerRouter.post('/v4/api/seller/signin', SigninSeller)
@@ -41,7 +43,8 @@ SellerRouter.put('/v4/api/seller/email/change/done', SellerAuthMiddleware, Verif
 
 
 // 7 user address create 
-SellerRouter.post('/v3/api/seller/create/address', SellerAuthMiddleware, CreateSellerAddress)
+SellerRouter.post('/v3/api/seller/create/address', Seller_AddressValidation,
+    Seller_Address_validation_Error, SellerAuthMiddleware, CreateSellerAddress)
 
 SellerRouter.get('/v3/api/seller/read/address', SellerAuthMiddleware, ReadSelerAddress)
 
