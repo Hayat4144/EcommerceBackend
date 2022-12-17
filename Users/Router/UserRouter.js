@@ -20,7 +20,7 @@ const UserRouter = express.Router();
 UserRouter.post('/v3/api/user/signup', UserSignup)
 
 // 2 Sigin for user
-UserRouter.post('/v3/api/user/sigin', UserSignin)
+UserRouter.post('/v3/api/user/signin', UserSignin)
 
 // 3 Change Password for user 
 UserRouter.put('/v3/api/user/change/password', UserAuthMiddleware, UserChangePassword)
