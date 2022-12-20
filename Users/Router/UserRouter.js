@@ -11,12 +11,12 @@ const { CreateUserAddress } = require('../Address/api/CreateAddress');
 const { ReadUserAddress } = require('../Address/api/ReadUserAddress');
 const { UpdateUserAddress } = require('../Address/api/UpdateUserAddress');
 const { UserProfileImage } = require('../Profile/userprofile_upload');
-const singalfileupload = require('../../utils/multe_singal');
 const { AddressValidation, Address_validation_Error } = require('../Validation/AddressValidations');
 const { UserValidate, User_Validation_Error } = require('../Validation/UserValidation');
 const { UserEmailValidate, User_Email_Validation_Error } = require('../Validation/UserEmailValidation');
 const { ConfirmEmailValidate, Confirm_Email_Validation_Error } = require('../Validation/EmailConfirmValidate');
 const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../../Seller/validation/ConfirmPasswordValidation');
+const upload = require('../../utils/upload');
 
 
 
@@ -61,7 +61,7 @@ UserRouter.get('/v3/api/user/read/address', UserAuthMiddleware, ReadUserAddress)
 UserRouter.put('/v3/api/user/update/address', AddressValidation, Address_validation_Error,
     UserAuthMiddleware, UpdateUserAddress)
 
-UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, singalfileupload,
+UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, upload.single('avtar'),
     UserProfileImage)
 
 
