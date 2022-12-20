@@ -3,3 +3,5 @@
 .env
 private.ec.key
 public.pem
+server.crt
+server.key
