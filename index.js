@@ -11,11 +11,14 @@ const { ErrorMiddleware } = require("./Middleware/ErrorMiddleware");
 const UserRouter = require("./Users/Router/UserRouter");
 const { CloudinaryConfiguration } = require("./Config/Cloudinary_Config");
 const cors = require("cors");
-
+const responsetime = require("response-time");
+const fs = require('fs')
 const corsOptions = {
   origin: "http://localhost:5173",
   credentials: true,
 };
+
+app.use(responsetime());
 
 app.use(cors(corsOptions));
 
@@ -45,13 +48,22 @@ app.use(UserRouter);
 
 app.use(ErrorMiddleware);
 
-const server = app.listen(5000, (err) => {
+
+// spdy.createServer(
+//   {
+//     key: fs.readFileSync("./server.key"),
+//     cert: fs.readFileSync("./server.crt")
+//   },
+//   app
+// ).listen(5000, (err) => {
+//   if (err) {
+//     throw new Error(err)
+//   }
+//   console.log("Listening on port 5000")
+// })
+
+app.listen(5000, (err) => {
   err ? console.log(err) : console.log("running at port 500");
 });
 
-// unhandledRejection
-// process.on('unhandledRejection', (err) => {
-// 	console.log(`Error Message: ${err.message}`)
-// 	console.log('Shutting down the server due to uncaughtException ')
-// 	process.exit(1)
-// })
+
