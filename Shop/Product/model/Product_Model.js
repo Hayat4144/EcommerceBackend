@@ -18,15 +18,34 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    image: {
-        type: mongoose.SchemaTypes.Url,
-        required: true
-    },
+    assets: {
+        images: {
+            type: Array,
+            required: true
+        }
+    }
+    ,
     category: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true,
-        ref:'Category'
+        ref: 'Category'
 
+    },
+    varients: {
+        cnt: {
+            type: Number,
+            max: 40
+        },
+        attributes: [
+            {
+                name: {
+                    type: String,
+                    max: 20,
+                    min: 2
+                }
+
+            }
+        ]
     },
     brand: {
         type: String,
