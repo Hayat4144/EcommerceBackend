@@ -8,13 +8,14 @@ const { CreateProductVarient } = require('../Api/varients/CrProductVarient');
 const { Get_All_ProductVarients, fetch_Product_By_Id_Or_ProductId } = require('../Api/varients/FetchProductVarients');
 const { DeleteVarients } = require('../Api/varients/DltVarients');
 const { UpdataVarients } = require('../Api/varients/UpdVarients');
+const upload = require('../../../utils/upload')
 const Product_router = express.Router();
 
 
 // Product Routers
 
 // 1. Create Product 
-Product_router.post('/v4/api/create/product', SellerAuthMiddleware, CreateProduct)
+Product_router.post('/v4/api/create/product', upload.array('product_image', 4), SellerAuthMiddleware, CreateProduct)
 
 // 2. get all product 
 Product_router.get('/v4/api/get_all/product', Get_All_Product)
