@@ -7,7 +7,7 @@ const streamifier = require('streamifier')
 exports.UserProfileImage = AsyncFunc(async (req, res, next) => {
     const IsProfileExist = await UserProfileImageModel.findOneAndDelete({ user: req.user_id })
     console.log(IsProfileExist)
-    let cloudinary_uplaod_stream = cloudinary.uploader.upload_stream({ folder: 'Seller/avtar' }, async (error, result) => {
+    let cloudinary_uplaod_stream = cloudinary.uploader.upload(req.file.path, { folder: 'Seller/avtar' }, async (error, result) => {
         console.log(result)
         if (error) {
             next(new ErrorHandler(error.message, 400))
@@ -20,7 +20,7 @@ exports.UserProfileImage = AsyncFunc(async (req, res, next) => {
             return res.status(200).json({ data: "Your profile is uploaded successfully." });
         }
     })
-    streamifier.createReadStream(req.file.buffer).pipe(cloudinary_uplaod_stream);
+
 
 
 })
