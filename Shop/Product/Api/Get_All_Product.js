@@ -45,7 +45,14 @@ exports.Get_All_Product = async (req, res) => {
         const t = { price: { $gt: 34, $lt: 45 } }
         console.log(Price)
         const data = await Product_Model.aggregate([
-            { $match: { name: { $regex: search, $options: 'i' } } },
+            {
+                $match: {
+                    $or: [
+                        { name: { $regex: search, $options: 'i' } },
+                        { description: { $regex: search, $options: 'i' } }
+                    ]
+                }
+            },
             { $match: { price: Price } },
             {
                 $facet: {
