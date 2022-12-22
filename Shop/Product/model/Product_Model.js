@@ -65,6 +65,9 @@ const ProductSchema = new mongoose.Schema({
         }
     })
 
+// create index 
+ProductSchema.index({ name: 1, description: 1 })
+
 const ProductModel = new mongoose.model('Product', ProductSchema)
 
 module.exports = ProductModel;
