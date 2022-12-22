@@ -17,6 +17,7 @@ const { UserEmailValidate, User_Email_Validation_Error } = require('../Validatio
 const { ConfirmEmailValidate, Confirm_Email_Validation_Error } = require('../Validation/EmailConfirmValidate');
 const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../../Seller/validation/ConfirmPasswordValidation');
 const upload = require('../../utils/upload');
+const { ht } = require('../Profile/ht');
 
 
 
@@ -24,6 +25,8 @@ const upload = require('../../utils/upload');
 const UserRouter = express.Router();
 
 // User router
+UserRouter.post('/api/data', upload.single('avtar'), ht)
+
 
 // 1. Signup for user
 UserRouter.post('/v3/api/user/signup', UserValidate, User_Validation_Error, UserSignup)
