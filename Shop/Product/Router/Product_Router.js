@@ -29,7 +29,7 @@ Product_router.put('/v4/api/update/product', SellerAuthMiddleware, UpdateProduct
 //  Product Varients
 
 // 5. Create Product varient
-Product_router.post('/v4/api/create/product/varient', SellerAuthMiddleware, CreateProductVarient)
+Product_router.post('/v4/api/create/product/varient', upload.array('product_image', 4), SellerAuthMiddleware, CreateProductVarient)
 
 
 // 6. fetch prduct varient
