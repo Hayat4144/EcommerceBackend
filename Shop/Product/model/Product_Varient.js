@@ -14,18 +14,20 @@ const ProductVarientSchema = new mongoose.Schema({
         max: 400,
         required: true
     },
-    image: {
-        type: mongoose.SchemaTypes.Url,
-        required: true
+    assets: {
+        images: {
+            type: Array,
+            required: true
+        }
     },
-    price:{
-        type:Number,
-        required:true,
-        min:1  
+    price: {
+        type: Number,
+        required: true,
+        min: 1
     },
-    seller:{
-        type:mongoose.SchemaTypes.ObjectId,
-        ref:'seller'
+    seller: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'seller'
     },
     product_attribute: {
         type: Array,
@@ -40,5 +42,5 @@ const ProductVarientSchema = new mongoose.Schema({
     }
 )
 
-const ProductVarient_Model = new mongoose.model('product_varients' , ProductVarientSchema)
+const ProductVarient_Model = new mongoose.model('product_varients', ProductVarientSchema)
 module.exports = ProductVarient_Model
