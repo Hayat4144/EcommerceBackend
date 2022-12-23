@@ -12,7 +12,8 @@ const UserRouter = require("./Users/Router/UserRouter");
 const { CloudinaryConfiguration } = require("./Config/Cloudinary_Config");
 const cors = require("cors");
 const responsetime = require("response-time");
-const fs = require('fs')
+const fs = require('fs');
+const BannerRouter = require("./Shop/Banner/router/BannerRouter");
 const corsOptions = {
   origin: "http://localhost:5173",
   credentials: true,
@@ -48,6 +49,7 @@ app.use(UserRouter);
 
 app.use(ErrorMiddleware);
 
+app.use(BannerRouter)
 
 // spdy.createServer(
 //   {
