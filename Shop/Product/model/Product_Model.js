@@ -56,14 +56,35 @@ const ProductSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'seller',
         required: true
+    },
+    ratings: {
+        type: mongoose.SchemaTypes.Mixed,
+        1: Number,
+        2: Number,
+        3: Number,
+        4: Number,
+        5: Number,
+        get: function (r) {
+            console.log(r)
+        },
+        set: function (r) {
+            console.log(r)
+        },
+        default: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
     }
+
 },
     {
         timestamps: {
             createdAt: 'created_at', // Use `created_at` to store the created date
             updatedAt: 'updated_at' // and `updated_at` to store the last updated date
         }
-    })
+    },
+    // {
+    //     toObject: { getters: true },
+    //     toJSON: { getters: true }
+    // }
+)
 
 // create index 
 ProductSchema.index({ name: 1, description: 1 })
