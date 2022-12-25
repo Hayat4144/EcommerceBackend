@@ -57,22 +57,27 @@ const ProductSchema = new mongoose.Schema({
         ref: 'seller',
         required: true
     },
-    ratings: {
-        type: mongoose.SchemaTypes.Mixed,
-        1: Number,
-        2: Number,
-        3: Number,
-        4: Number,
-        5: Number,
-        get: function (r) {
-            console.log(r)
-        },
-        set: function (r) {
-            console.log(r)
-        },
-        default: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }
+    ratings_review: [
+        {
+            user: {
+                type: mongoose.SchemaTypes.ObjectId,
+                // required: true,
+                ref: 'user'
+            },
+            Star: {
+                type: Number,
+                required: true,
+            },
+            comment: {
+                type: String,
+                max: 200,
+                min: 30,
+            }
+        }
+    ],
+    average_rating: {
+        type: Number,
     }
-
 },
     {
         timestamps: {
@@ -80,14 +85,10 @@ const ProductSchema = new mongoose.Schema({
             updatedAt: 'updated_at' // and `updated_at` to store the last updated date
         }
     },
-    // {
-    //     toObject: { getters: true },
-    //     toJSON: { getters: true }
-    // }
 )
 
 // create index 
-ProductSchema.index({ name: 1, description: 1 })
+ProductSchema.index({ name: 1, description: 1, average_rating: 1 })
 
 const ProductModel = new mongoose.model('Product', ProductSchema)
 
