@@ -17,6 +17,7 @@ exports.CreateProduct = AsyncFunc(async (req, res, next) => {
                     return reject({ error })
                 }
                 else {
+                    console.log(data.secure_url)
                     return resolve(data.secure_url)
                 }
             })
@@ -49,6 +50,8 @@ exports.CreateProduct = AsyncFunc(async (req, res, next) => {
             if (error) {
                 next(new ErrorHandler(error.message, 400))
             } else {
+                // console.log(data)
+                console.log(data.get('ratings', null, { getters: true }))
                 return res.status(200).json({ data })
             }
         })
