@@ -4,11 +4,15 @@ const { DeleteProduct } = require('../Api/DeleteProduct');
 const { Get_All_Product } = require('../Api/Get_All_Product');
 const { UpdateProduct } = require('../Api/UpdataProduct');
 const SellerAuthMiddleware = require('../../../Middleware/SellerAuthMiddleware');
+const UserAuthMiddleware = require('../../../Middleware/UserAuthMiddleware');
 const { CreateProductVarient } = require('../Api/varients/CrProductVarient');
-const { Get_All_ProductVarients, fetch_Product_By_Id_Or_ProductId } = require('../Api/varients/FetchProductVarients');
+const { Get_All_ProductVarients, fetch_Product_By_Id_Or_ProductId, fetchProductVarient } = require('../Api/varients/FetchProductVarients');
 const { DeleteVarients } = require('../Api/varients/DltVarients');
 const { UpdataVarients } = require('../Api/varients/UpdVarients');
-const upload = require('../../../utils/upload')
+const upload = require('../../../utils/upload');
+const { FetchProductById } = require('../Api/ProductById');
+const { CreateRatings } = require('../Api/Ratings/CreateRatings');
+
 const Product_router = express.Router();
 
 
@@ -16,6 +20,8 @@ const Product_router = express.Router();
 
 // 1. Create Product 
 Product_router.post('/v4/api/create/product', upload.array('product_image', 4), SellerAuthMiddleware, CreateProduct)
+
+Product_router.get('/v4/api/product/:id', FetchProductById)
 
 // 2. get all product 
 Product_router.get('/v4/api/get_all/product', Get_All_Product)
@@ -27,6 +33,7 @@ Product_router.delete('/v4/api/delete/product', SellerAuthMiddleware, DeleteProd
 Product_router.put('/v4/api/update/product', SellerAuthMiddleware, UpdateProduct)
 
 //  Product Varients
+Product_router.get('/v3/api/product/varientById/:id', fetchProductVarient)
 
 // 5. Create Product varient
 Product_router.post('/v4/api/create/product/varient', upload.array('product_image', 4), SellerAuthMiddleware, CreateProductVarient)
@@ -44,4 +51,7 @@ Product_router.delete('/v4/api/delete/product/varient', SellerAuthMiddleware, De
 // 9 update product varient
 Product_router.put('/v4/api/update/product/varient', SellerAuthMiddleware, UpdataVarients)
 
+
+Product_router.post('/v4/api/product/reviews', UserAuthMiddleware, CreateRatings)
+// Product_router.get('/apis', ReadRatings)
 module.exports = Product_router;
