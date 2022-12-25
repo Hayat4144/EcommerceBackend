@@ -10,6 +10,7 @@ const getstar = (ratings) => {
     }
     let average_rating = sum / total;
     console.log(average_rating)
+    console.log(ratings)
     return (Math.round(average_rating * 100) / 100).toFixed(2)
 }
 
@@ -40,6 +41,7 @@ const RatingSchema = new mongoose.Schema({
                 if (r instanceof Object) return r
                 else { throw new Error('') }
             } else {
+                console.log('average', r)
                 // get the actual ratings object without using the getter which returns  an integer value
                 // r is the ratings which is an integer value that represent the star level from 1 to 5
                 if (r instanceof Object) {
@@ -59,7 +61,7 @@ const RatingSchema = new mongoose.Schema({
 
     // { toObject: { getters: true, }, toJSON: { getters: true } }
 
-}, { toObject: { getters: true, }, toJSON: { getters: true } })
+})
 
 const RatingModel = new mongoose.model('rating_review', RatingSchema)
 
