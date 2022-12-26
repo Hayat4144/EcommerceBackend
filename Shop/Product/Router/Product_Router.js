@@ -51,7 +51,8 @@ Product_router.delete('/v4/api/delete/product/varient', SellerAuthMiddleware, De
 // 9 update product varient
 Product_router.put('/v4/api/update/product/varient', SellerAuthMiddleware, UpdataVarients)
 
-
+//  10 Product reviews
 Product_router.post('/v4/api/product/reviews', UserAuthMiddleware, CreateRatings)
-// Product_router.get('/apis', ReadRatings)
+
+
 module.exports = Product_router;
