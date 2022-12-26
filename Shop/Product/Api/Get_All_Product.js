@@ -1,8 +1,11 @@
+const ErrorHandler = require('../../../utils/ErrorHandler');
 const Product_Model = require('../model/Product_Model')
 
-exports.Get_All_Product = async (req, res) => {
+exports.Get_All_Product = async (req, res, next) => {
     try {
         let { search, sort, category, page } = req.query;
+        console.log(search)
+        console.log(page)
         if (req.query.price) {
             var Price = JSON.stringify(req.query.price);
             Price = Price.replace(/\b(gt|lt|gte|lte)\b/g, (key, value) => `$${key}`)
@@ -41,17 +44,10 @@ exports.Get_All_Product = async (req, res) => {
         //         console.log(error)
         //         return error ? res.status(400).json({ error }) : res.status(200).json({ doc })
         //     })
-
-        const t = { price: { $gt: 34, $lt: 45 } }
         console.log(Price)
-        const data = await Product_Model.aggregate([
+        Product_Model.aggregate([
             {
-                $match: {
-                    $or: [
-                        { name: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-                }
+                $match: { name: { $regex: search, $options: 'i' } }
             },
             { $match: { price: Price } },
             {
@@ -64,8 +60,17 @@ exports.Get_All_Product = async (req, res) => {
                     ]
                 }
             }
-        ])
-        return res.status(200).json({ data })
+        ], (error, data) => {
+            if (error) next(new ErrorHandler(error.message, 400))
+            console.log(data[0].total_result.length)
+            if (data[0].total_result.length === 0) {
+                next(new ErrorHandler('No product found', 404))
+            }
+            else {
+                return res.status(200).json({ data })
+            }
+        })
+
     } catch (error) {
         console.log(error)
     }
