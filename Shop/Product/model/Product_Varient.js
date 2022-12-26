@@ -6,32 +6,27 @@ const ProductVarientSchema = new mongoose.Schema({
     product: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Product',
-        required: true
+        required: [true, "Please provide the product id"]
     },
     stock: {
         type: Number,
         min: 10,
         max: 400,
-        required: true
-    },
-    assets: {
-        images: {
-            type: Array,
-            required: true
-        }
+        required: [true, "Please provide the stock of varient"]
     },
     price: {
         type: Number,
-        required: true,
+        required: [true, "Please provide price of varient"],
         min: 1
     },
     seller: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'seller'
+        ref: 'seller',
+        // required: [true, 'Please provide the seller id']
     },
     product_attribute: {
-        type: Array,
-        required: true
+        type: mongoose.SchemaTypes.Mixed,
+        required: [true, "Please provide the varient attribute"]
     }
 },
     {

@@ -36,7 +36,7 @@ Product_router.put('/v4/api/update/product', SellerAuthMiddleware, UpdateProduct
 Product_router.get('/v3/api/product/varientById/:id', fetchProductVarient)
 
 // 5. Create Product varient
-Product_router.post('/v4/api/create/product/varient', upload.array('product_image', 4), SellerAuthMiddleware, CreateProductVarient)
+Product_router.post('/v4/api/create/product/varient', SellerAuthMiddleware, CreateProductVarient)
 
 
 // 6. fetch prduct varient
