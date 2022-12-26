@@ -18,6 +18,7 @@ const { ConfirmEmailValidate, Confirm_Email_Validation_Error } = require('../Val
 const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../../Seller/validation/ConfirmPasswordValidation');
 const upload = require('../../utils/upload');
 const { ht } = require('../Profile/ht');
+const { CreateCartItem } = require('../Cart/Cart');
 
 
 
@@ -67,5 +68,7 @@ UserRouter.put('/v3/api/user/update/address', AddressValidation, Address_validat
 UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, upload.single('avtar'),
     UserProfileImage)
 
+
+UserRouter.post('/v3/api/user/create/cart', UserAuthMiddleware, CreateCartItem)
 
 module.exports = UserRouter;
