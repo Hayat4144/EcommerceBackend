@@ -14,17 +14,27 @@ exports.CreateUserAddress = AsyncFunc(async (req, res, next) => {
 		...req.body,
 		user: req.user_id,
 	}
-	UserAddressModel.create(UserAddress_object, (err, doc) => {
-		if (err) {
-			if (err.code === 11000) {
-				next(new ErrorHandler('You have already create your address.', 400))
-			}
-			else {
-				next(new ErrorHandler(err, 400));
-			}
+	const IsUserAddress = await UserAddressModel.find({ user: req.user_id })
+	if (IsUserAddress.length > 0) {
+		UserAddressModel.findOneAndUpdate({ user: req.user_id }, { $set: req.body }, { new: true }, (error, doc) => {
+			if (error) next(new ErrorHandler(error, 400))
+			return res.status(200).json({ data: "Your address has been updated successfully.", doc });
+		})
+	}
+	else {
+		UserAddressModel.create(UserAddress_object, (err, doc) => {
+			if (err) {
+				if (err.code === 11000) {
+					next(new ErrorHandler('You have already create your address.', 400))
+				}
+				else {
+					next(new ErrorHandler(err, 400));
+				}
 
-		} else {
-			return res.status(200).json({ data: "Your address has been created successfully.", doc });
-		}
-	})
+			} else {
+				return res.status(200).json({ data: "Your address has been created successfully.", doc });
+			}
+		})
+	}
+
 })
