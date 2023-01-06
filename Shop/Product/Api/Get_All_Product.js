@@ -90,6 +90,7 @@ exports.GetProductBYCategory = (AsyncFunc(async (req, res, next) => {
             ]
         }, (error, data) => {
             if (error) return next(new ErrorHandler(error, 400));
+            if (data.length < 0) return next(new ErrorHandler('No product has been found.', 400))
             return res.status(200).json({ data })
         })
     })
