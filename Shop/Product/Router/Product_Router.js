@@ -1,7 +1,7 @@
 const express = require('express');
 const { CreateProduct } = require('../Api/CreateProduct');
 const { DeleteProduct } = require('../Api/DeleteProduct');
-const { Get_All_Product } = require('../Api/Get_All_Product');
+const { Get_All_Product, GetProductBYCategory } = require('../Api/Get_All_Product');
 const { UpdateProduct } = require('../Api/UpdataProduct');
 const SellerAuthMiddleware = require('../../../Middleware/SellerAuthMiddleware');
 const UserAuthMiddleware = require('../../../Middleware/UserAuthMiddleware');
@@ -25,6 +25,8 @@ Product_router.get('/v4/api/product/:id', FetchProductById)
 
 // 2. get all product 
 Product_router.get('/v4/api/get_all/product', Get_All_Product)
+
+Product_router.get('/v4/api/getproduct_by_category', GetProductBYCategory)
 
 // 3 Delete product 
 Product_router.delete('/v4/api/delete/product', SellerAuthMiddleware, DeleteProduct)
