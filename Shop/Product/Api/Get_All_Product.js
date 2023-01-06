@@ -1,4 +1,6 @@
+const AsyncFunc = require('../../../utils/AsyncFunc');
 const ErrorHandler = require('../../../utils/ErrorHandler');
+const category_model = require('../../Category/model/category_model');
 const Product_Model = require('../model/Product_Model')
 
 exports.Get_All_Product = async (req, res, next) => {
@@ -75,3 +77,20 @@ exports.Get_All_Product = async (req, res, next) => {
         console.log(error)
     }
 }
+
+exports.GetProductBYCategory = (AsyncFunc(async (req, res, next) => {
+    const { category_id } = req.query;
+    category_model.find({ $or: [{ _id: category_id }, { parentId: category_id }] }, (error, subcategories) => {
+        if (error) return next(new ErrorHandler(error, 400))
+        const subcategoryId = subcategories.map(subcategory => subcategory._id)
+        Product_Model.find({
+            $or: [
+                { category: category_id },
+                { category: { $in: subcategoryId } }
+            ]
+        }, (error, data) => {
+            if (error) return next(new ErrorHandler(error, 400));
+            return res.status(200).json({ data })
+        })
+    })
+}))
