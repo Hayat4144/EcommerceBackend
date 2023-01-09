@@ -5,9 +5,7 @@ const Product_Model = require('../model/Product_Model')
 
 exports.Get_All_Product = async (req, res, next) => {
     try {
-        let { search, sort, category, page } = req.query;
-        console.log(search)
-        console.log(page)
+        let { search, sort, category, page ,rating} = req.query;
         if (req.query.price) {
             var Price = JSON.stringify(req.query.price);
             Price = Price.replace(/\b(gt|lt|gte|lte)\b/g, (key, value) => `$${key}`)
@@ -38,41 +36,54 @@ exports.Get_All_Product = async (req, res, next) => {
                 });
             }
         }
-        // await Product_Model.find(search)
-        //     .skip(pagination(5))
-        //     .limit(5)
-        //     .sort(SortIn)
-        //     .exec((error, doc) => {
-        //         console.log(error)
-        //         return error ? res.status(400).json({ error }) : res.status(200).json({ doc })
-        //     })
-        console.log(Price)
+        console.log(SortIn)
+
         Product_Model.aggregate([
             {
-                $match: { name: { $regex: search, $options: 'i' } }
-            },
-            { $match: { price: Price } },
-            {
-                $facet: {
-                    result: [{ $skip: pagination(5) }, { $limit: 10 }],
-                    total_result: [
-                        {
-                            $count: 'count'
-                        }
-                    ]
+                $search:
+                {
+                    index: 'default',
+                    compound: {
+                        must:[{
+                            text:{
+                                query:search,
+                                path:"name",
+                                fuzzy:{
+                                    maxEdits:2
+                                }
+                            }
+                        }],
+                        // filter:{
+                        //     range:{
+                        //         gte:0,
+                        //         lte:Number(rating),
+                        //         path:"average_rating"
+                        //     }
+                        // }
+                    }
                 }
+            },
+            {$match:{price:Price}},
+            {
+                        $facet: {
+                            result: [{ $skip: pagination(5) }, { $limit: 10 }, {$sort:SortIn}],
+                            total_result: [
+                                {
+                                    $count: 'count'
+                                }
+                            ]
+                        }
             }
         ], (error, data) => {
-            if (error) next(new ErrorHandler(error.message, 400))
+            if (error) return next(new ErrorHandler(error.message, 400))
             console.log(data[0].total_result.length)
             if (data[0].total_result.length === 0) {
-                next(new ErrorHandler('No product found', 404))
+                return next(new ErrorHandler('No product found', 404))
             }
             else {
                 return res.status(200).json({ data })
             }
         })
-
     } catch (error) {
         console.log(error)
     }
@@ -95,3 +106,102 @@ exports.GetProductBYCategory = (AsyncFunc(async (req, res, next) => {
         })
     })
 }))
+
+
+
+
+
+
+
+
+
+
+
+// {
+//     "$search": {
+//       "compound": {
+//         "filter": [
+//           {
+//             "range": {
+//               "gte": 4,
+//               "path": "stars"
+//             }
+//           },
+//           {
+//             "text": {
+//               "query": [
+//                 "American",
+//                 "Hamburgers",
+//                 "Chinese"
+//               ],
+//               "path": "cuisine"
+//             }
+//           },
+//           {
+//             "text": {
+//               "query": "Manhattan",
+//               "path": "borough"
+//             }
+//           }
+//         ],
+//         "must": [
+//           {
+//             "text": {
+//               "query": "Little Brown Jug",
+//               "path": "name",
+//               "fuzzy": {
+//                 "maxEdits": 2
+//               }
+//             }
+//           }
+//         ],
+//         "score": {
+//           "function": {
+//             "multiply": [
+//               {
+//                 "score": "relevance"
+//               },
+//               {
+//                 "path": {
+//                   "value": "stars",
+//                   "undefined": 1
+//                 }
+//               },
+//               {
+//                 "path": {
+//                   "value": "sponsored",
+//                   "undefined": 1
+//                 }
+//               }
+//             ]
+//           }
+//         }
+//       }
+//     }
+//   }
+  
+//   {
+//     "$limit": 21
+//   }
+  
+//   {
+//     "$project": {
+//       "name": 1,
+//       "cuisine": 1,
+//       "borough": 1,
+//       "location": 1,
+//       "menu": 1,
+//       "restaurant_id": 1,
+//       "address.street": 1,
+//       "stars": 1,
+//       "review_count": 1,
+//       "PriceRange": 1,
+//       "sponsored": 1,
+//       "score": {
+//         "$meta": "searchScore"
+//       },
+//       "highlights": {
+//         "$meta": "searchHighlights"
+//       }
+//     }
+//   }
