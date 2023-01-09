@@ -77,7 +77,7 @@ const ProductSchema = new mongoose.Schema({
     ],
     average_rating: {
         type: Number,
-        default: 3,
+        default: 2,
     }
 },
     {
@@ -89,7 +89,7 @@ const ProductSchema = new mongoose.Schema({
 )
 
 // create index 
-ProductSchema.index({ name: 1, description: 1, average_rating: 1 })
+// ProductSchema.index({ name: "text", description: "text", average_rating: 1 })
 
 const ProductModel = new mongoose.model('Product', ProductSchema)
 
