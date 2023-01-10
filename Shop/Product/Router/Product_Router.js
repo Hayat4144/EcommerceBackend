@@ -7,6 +7,7 @@ const SellerAuthMiddleware = require('../../../Middleware/SellerAuthMiddleware')
 const UserAuthMiddleware = require('../../../Middleware/UserAuthMiddleware');
 const { CreateProductVarient } = require('../Api/varients/CrProductVarient');
 const { Get_All_ProductVarients, fetch_Product_By_Id_Or_ProductId, fetchProductVarient } = require('../Api/varients/FetchProductVarients');
+const { SimilarProducts } = require('../Api/SimilarProducts');
 const { DeleteVarients } = require('../Api/varients/DltVarients');
 const { UpdataVarients } = require('../Api/varients/UpdVarients');
 const upload = require('../../../utils/upload');
@@ -56,5 +57,7 @@ Product_router.put('/v4/api/update/product/varient', SellerAuthMiddleware, Updat
 //  10 Product reviews
 Product_router.post('/v4/api/product/reviews', UserAuthMiddleware, CreateRatings)
 
+
+Product_router.get('/v4/api/get/similar/product', SimilarProducts)
 
 module.exports = Product_router;
