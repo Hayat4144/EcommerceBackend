@@ -40,8 +40,8 @@ UserRouter.put('/v3/api/user/change/password', ConfrimPasswordValidate,
     Confirm_Password_Validation_Error, UserAuthMiddleware, UserChangePassword)
 
 // Reset password request
-UserRouter.post('/v3/api/user/reset/password/request', ConfrimPasswordValidate,
-    Confirm_Password_Validation_Error, UserAuthMiddleware, UserPasswordReset)
+UserRouter.post('/v3/api/user/reset/password/request', UserEmailValidate,
+    User_Email_Validation_Error, UserAuthMiddleware, UserPasswordReset)
 
 // Verify reset password token 
 UserRouter.put('/v3/api/user/reset/password/verify/done', ConfrimPasswordValidate,

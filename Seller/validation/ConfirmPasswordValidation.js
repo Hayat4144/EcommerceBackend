@@ -2,7 +2,7 @@ const { check, validationResult } = require('express-validator')
 
 
 exports.ConfrimPasswordValidate = [
-    check('newpassword')
+    check('new_password')
         .isStrongPassword()
         .trim()
         .escape()
