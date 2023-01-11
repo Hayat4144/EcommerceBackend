@@ -15,7 +15,7 @@ const responsetime = require("response-time");
 const fs = require('fs');
 const BannerRouter = require("./Shop/Banner/router/BannerRouter");
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: true,
   credentials: true,
 };
 
