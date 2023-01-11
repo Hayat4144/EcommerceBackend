@@ -21,7 +21,7 @@ exports.UserEmailChange = AsyncFunc(async (req, res, next) => {
             token: crypto.randomUUID()
         }, async (err, doc) => {
             if (!err) {
-                const link = `${process.env.FRONTEND_URL}/v2/auth/user/change/email/link/verify/${doc.user}/${doc.token}`
+                const link = `${req.get('origin')}/v2/auth/user/change/email/link/verify/${doc.user}/${doc.token}`
                 const subject = "Email change request"
                 const message = `
                             <html>
