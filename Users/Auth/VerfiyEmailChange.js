@@ -9,7 +9,7 @@ exports.VerifyEmailChange = AsyncFunc(async (req, res, next) => {
     if (IsValidToken.length === 0) {
         next(new ErrorHandler(`Sorry , Invalid or Broken link`, 400))
     }
-    await UserModel.findByIdAndUpdate(req.user_id, { $set: { email: new_email } }, { $new: true })
+    await UserModel.findByIdAndUpdate(req.user_id, { $set: { email: new_email } }, { new: true })
         .exec((error, doc) => {
             if (error) {
                 next(new ErrorHandler(error.message, 400))
