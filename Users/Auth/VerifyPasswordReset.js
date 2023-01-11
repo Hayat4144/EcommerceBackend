@@ -13,7 +13,7 @@ exports.VerifyPasswordChange = AsyncFunc(async (req, res, next) => {
     else {
         const saltRound = 10;
         const hashpassword = await bcrypt.hash(new_password, saltRound);
-        await UserModel.findByIdAndUpdate(req.user_id, { $set: { password: hashpassword } }, { $new: true })
+        await UserModel.findByIdAndUpdate(req.user_id, { $set: { password: hashpassword } }, { new: true })
             .exec((error, doc) => {
                 if (error) {
                     next(new ErrorHandler(error.message, 400))
