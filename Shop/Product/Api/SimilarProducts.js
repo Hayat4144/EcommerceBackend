@@ -4,7 +4,7 @@ const ProductModel = require('../model/Product_Model')
 const mongoose = require('mongoose')
 
 exports.SimilarProducts = (AsyncFunc(async (req, res, next) => {
-    const { search, productId, categoryId } = req.body;
+    const { search, productId, categoryId } = req.query;
     ProductModel.aggregate([
         {
             $search: {
