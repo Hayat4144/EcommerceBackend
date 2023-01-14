@@ -8,7 +8,8 @@ const CartItemSchema = new mongoose.Schema({
     },
     ProductvarientId: {
         type: mongoose.SchemaTypes.ObjectId,
-        required: true
+        required: true,
+        ref: 'product_varients'
     },
     quantity: {
         type: Number,
