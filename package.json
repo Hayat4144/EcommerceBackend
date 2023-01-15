@@ -25,7 +25,9 @@
     "nodemailer": "^6.8.0",
     "response-time": "^2.3.2",
     "slugify": "^1.6.5",
-    "streamifier": "^0.1.1"
+    "streamifier": "^0.1.1",
+    "stripe": "^11.6.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
