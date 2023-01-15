@@ -14,10 +14,12 @@ const cors = require("cors");
 const responsetime = require("response-time");
 const fs = require('fs');
 const BannerRouter = require("./Shop/Banner/router/BannerRouter");
+const stripe = require('stripe')(process.env.STRIPE_PUBLISHABLE_KEY)
 const corsOptions = {
   origin: true,
   credentials: true,
 };
+
 
 app.use(responsetime());
 
