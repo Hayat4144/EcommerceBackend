@@ -27,6 +27,7 @@ const UserAuthMiddleware = (req, res, next) => {
                         }
                         else {
                             req.user_id = doc._id;
+                            req.email = doc.email;
                             next();
                         }
 
