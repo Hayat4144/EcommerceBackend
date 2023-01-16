@@ -37,46 +37,56 @@ exports.MakeOrder = AsyncFunc(async (req, res, next) => {
             totalPrice
         }, async (error, doc) => {
             if (error) return next(new ErrorHandler(error, 400));
-            await stripe.paymentIntents.create({
-                amount: doc.totalPrice * 100, // ------------- stripe take price in cent so, multiply by 100  make it actual payment ---------- //
-                currency: 'INR',
-                payment_method_types: ["card"],
-                receipt_email: "ihayat855@gmail.com",
-                shipping: {
-                    address: {
-                        city: "Siwan",
-                        line1: "Ismail shaheed road purani quilla pokhra",
-                        postal_code: 841210,
-                        state: "Bihar",
-                        country: "INDIA"
-                    },
-                    name: "Hayat ilyas"
-                }
-            }, {
-                idempotencyKey: uuid(), /// ----------------- avoid payment twice for the same order --------------------- //
-            }).then(response => {
-                return res.status(200).json({ data: response })
+            await stripe.customers.create({
+                email: req.email,
+                payment_method: "pm_card_visa"
+            }).then(async customer => {
+                await stripe.paymentIntents.create({
+                    amount: doc.totalPrice * 100, // ------------- stripe take price in cent so, multiply by 100  make it actual payment ---------- //
+                    currency: 'INR',
+                    payment_method_types: ["card"],
+                    customer: customer.id,
+                    receipt_email: "ihayat855@gmail.com",
+                    confirmation_method: "manual",
+                    shipping: {
+                        address: {
+                            city: "Siwan",
+                            line1: "Ismail shaheed road purani quilla pokhra",
+                            postal_code: 841210,
+                            state: "Bihar",
+                            country: "INDIA"
+                        },
+                        name: "Hayat ilyas"
+                    }
+                }, {
+                    idempotencyKey: uuid(), /// ----------------- avoid payment twice for the same order --------------------- //
+                }).then(response => {
+                    return res.status(200).json({ data: response.client_secret })
+                }).catch(error => {
+                    switch (error.type) {
+                        case 'StripeCardError':
+                            return next(new ErrorHandler(error.message, 400))
+                        case 'StripeRateLimitError':
+                            return next(new ErrorHandler("Too many requests made to the API too quickly", 400))
+
+                        case 'StripeInvalidRequestError':
+                            return next(new ErrorHandler("Invalid parameters were supplied to Stripe's API", 400))
+                        case 'StripeAPIError':
+                            return next(new ErrorHandler("An error occurred internally with Stripe's API", 400))
+
+                        case 'StripeConnectionError':
+                            return next(new ErrorHandler("Some kind of error occurred during the HTTPS communication", 400))
+                        case 'StripeAuthenticationError':
+                            return next(new ErrorHandler("You probably used an incorrect API key", 400))
+
+                        default:
+                            return next(new ErrorHandler(error, 400))
+                    }
+                })
             }).catch(error => {
-                switch (error.type) {
-                    case 'StripeCardError':
-                        return next(new ErrorHandler(error.message, 400))
-                    case 'StripeRateLimitError':
-                        return next(new ErrorHandler("Too many requests made to the API too quickly", 400))
-
-                    case 'StripeInvalidRequestError':
-                        return next(new ErrorHandler("Invalid parameters were supplied to Stripe's API", 400))
-                    case 'StripeAPIError':
-                        return next(new ErrorHandler("An error occurred internally with Stripe's API", 400))
-
-                    case 'StripeConnectionError':
-                        return next(new ErrorHandler("Some kind of error occurred during the HTTPS communication", 400))
-                    case 'StripeAuthenticationError':
-                        return next(new ErrorHandler("You probably used an incorrect API key", 400))
-
-                    default:
-                        return next(new ErrorHandler(error, 400))
-                }
+                return next(new ErrorHandler(error, 400))
             })
+
         })
     }).catch(error => {
         console.log(error);
@@ -87,3 +97,6 @@ exports.MakeOrder = AsyncFunc(async (req, res, next) => {
 
 
 })
+
+
+// cus_NAlXDFUY0HPOwP
