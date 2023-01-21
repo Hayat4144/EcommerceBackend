@@ -14,6 +14,7 @@ const upload = require('../../../utils/upload');
 const { FetchProductById } = require('../Api/ProductById');
 const { CreateRatings } = require('../Api/Ratings/CreateRatings');
 const { SampleProducts } = require('../Api/SampleProducts');
+const { AllProducts } = require('../Api/AllProducts');
 
 const Product_router = express.Router();
 
@@ -61,5 +62,6 @@ Product_router.post('/v4/api/product/reviews', UserAuthMiddleware, CreateRatings
 
 Product_router.get('/v4/api/get/similar/product', SimilarProducts)
 Product_router.get('/v4/api/get/sample/product', SampleProducts)
+Product_router.get('/v4/api/products' , AllProducts)
 
 module.exports = Product_router;
