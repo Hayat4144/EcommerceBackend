@@ -20,6 +20,7 @@ const upload = require('../../utils/upload');
 const { ht } = require('../Profile/ht');
 const { CreateCartItem } = require('../Cart/Cart');
 const { MakeOrder } = require('../Order/MakeOrder');
+const { ConfirmPayment } = require('../Order/ConfirmPayment');
 
 
 
@@ -74,5 +75,7 @@ UserRouter.post('/v3/api/user/create/cart', UserAuthMiddleware, CreateCartItem)
 
 
 UserRouter.post('/v3/api/user/shop/order', UserAuthMiddleware, MakeOrder)
+
+UserRouter.post('/v3/api/user/shop/confirm/payment', ConfirmPayment)
 
 module.exports = UserRouter;
