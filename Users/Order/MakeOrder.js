@@ -61,7 +61,7 @@ exports.MakeOrder = AsyncFunc(async (req, res, next) => {
                 }, {
                     idempotencyKey: uuid(), /// ----------------- avoid payment twice for the same order --------------------- //
                 }).then(response => {
-                    return res.status(200).json({ data: response.client_secret })
+                    return res.status(200).json({ data: response.id })
                 }).catch(error => {
                     switch (error.type) {
                         case 'StripeCardError':
