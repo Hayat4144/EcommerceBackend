@@ -14,7 +14,7 @@ exports.ConfirmPayment = AsyncFunc(async (req, res, next) => {
       },
     })
     .then((result) => {
-      return res.status(200).json({ data: result });
+      return res.status(200).json({ data: "order Confirm" });
     })
     .catch((error) => {
       if (error) return next(new ErrorHandler(error.message, 400));
