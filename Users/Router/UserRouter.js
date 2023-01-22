@@ -21,6 +21,7 @@ const { ht } = require('../Profile/ht');
 const { CreateCartItem } = require('../Cart/Cart');
 const { MakeOrder } = require('../Order/MakeOrder');
 const { ConfirmPayment } = require('../Order/ConfirmPayment');
+const { OrderValidation, MakeOrder_Validation_Error } = require('../Validation/MakeOrderValidations');
 
 
 
@@ -74,7 +75,7 @@ UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, upload.single
 UserRouter.post('/v3/api/user/create/cart', UserAuthMiddleware, CreateCartItem)
 
 
-UserRouter.post('/v3/api/user/shop/order', UserAuthMiddleware, MakeOrder)
+UserRouter.post('/v3/api/user/shop/order',OrderValidation,MakeOrder_Validation_Error, UserAuthMiddleware,MakeOrder)
 
 UserRouter.post('/v3/api/user/shop/confirm/payment', ConfirmPayment)
 
