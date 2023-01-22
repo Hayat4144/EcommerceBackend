@@ -8,11 +8,11 @@ const jwt = require('jsonwebtoken')
 
 exports.UserSignin = AsyncFunc(async (req, res, next) => {
     const { email, password } = req.body;
-    const IsSellerExist = await UserModel.findOne({ email: email });
-    if (!IsSellerExist) {
+    const IsUserExist = await UserModel.findOne({ email: email });
+    if (!IsUserExist) {
         return next(new ErrorHandler('Sorry, Invalid/Credentials', 400))
     }
-    if (IsSellerExist && (await bcrypt.compare(password, IsSellerExist.password))) {
+    if (IsUserExist && (await bcrypt.compare(password, IsUserExist.password))) {
 
         // signinoptions for jwt sign
         var signOptions = {
@@ -22,11 +22,9 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
 
         // jwt payload
         const payload = {
-            id: IsSellerExist._id,
-            email: IsSellerExist.email,
-            name: IsSellerExist.name,
-            store_name: IsSellerExist.store_name,
-            is_varified: IsSellerExist.is_varified,
+            id: IsUserExist._id,
+            email: IsUserExist.email,
+            name: IsUserExist.name,
         }
 
         // read the private key file and sign a token if no error occured
@@ -37,7 +35,7 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
                     expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
                     SameSite: 'none',
                 })
-                return res.status(200).send({ data: 'Login Successfully.' })
+                return res.status(200).send({ data: 'Login Successfull.' })
             }
             else {
                 next(new ErrorHandler(err, 500))
