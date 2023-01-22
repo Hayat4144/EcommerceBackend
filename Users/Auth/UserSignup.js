@@ -4,11 +4,12 @@ const UserModel = require("../Model/UserModel");
 const bcrypt = require("bcrypt");
 
 exports.UserSignup = AsyncFunc(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { firstName,lastName, email, password } = req.body;
   const saltRound = 10;
   const hashpassword = await bcrypt.hash(password, saltRound);
   const create_user = {
-    name,
+    firstName,
+    lastName,
     email,
     password: hashpassword,
   };

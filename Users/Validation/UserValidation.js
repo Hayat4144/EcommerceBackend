@@ -14,11 +14,16 @@ exports.UserValidate = [
                 return value;
             }
         }),
-    check('name')
-        .isLength({ min: 4, max: 15 })
+    check('firstName')
+        .isLength({ min: 2, max: 15 })
         .trim()
         .escape()
-        .withMessage('Name should be minimum 4 and maximum 15 character.'),
+        .withMessage('First Name should be minimum 4 and maximum 15 character.'),
+    check('lastName')
+        .isLength({ min: 2, max: 15 })
+        .trim()
+        .escape()
+        .withMessage('Last Name should be minimum 4 and maximum 15 character.'),
     check('email')
         .isEmail()
         .trim()

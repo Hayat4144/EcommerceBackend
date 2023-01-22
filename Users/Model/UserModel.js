@@ -2,12 +2,17 @@ const mongoose = require('mongoose')
 require('mongoose-type-url')
 
 const UserSchema = new mongoose.Schema({
-    name: {
+    firstName: {
         type: String,
-        required: true,
         trim: true,
         max: 20,
         min: 4
+    },
+    lastName:{
+        type:String,
+        trim:true,
+        max:20,
+        min:5
     },
     email: {
         type: String,
