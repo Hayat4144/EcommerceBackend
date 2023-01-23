@@ -6,7 +6,7 @@ const { UpdateProduct } = require('../Api/UpdataProduct');
 const SellerAuthMiddleware = require('../../../Middleware/SellerAuthMiddleware');
 const UserAuthMiddleware = require('../../../Middleware/UserAuthMiddleware');
 const { CreateProductVarient } = require('../Api/varients/CrProductVarient');
-const { Get_All_ProductVarients, fetch_Product_By_Id_Or_ProductId, fetchProductVarient } = require('../Api/varients/FetchProductVarients');
+const { Get_All_ProductVarients, fetch_Product_By_Id_Or_ProductId, fetchProductVarient, FetchProductVarientById } = require('../Api/varients/FetchProductVarients');
 const { SimilarProducts } = require('../Api/SimilarProducts');
 const { DeleteVarients } = require('../Api/varients/DltVarients');
 const { UpdataVarients } = require('../Api/varients/UpdVarients');
@@ -63,5 +63,7 @@ Product_router.post('/v4/api/product/reviews', UserAuthMiddleware, CreateRatings
 Product_router.get('/v4/api/get/similar/product', SimilarProducts)
 Product_router.get('/v4/api/get/sample/product', SampleProducts)
 Product_router.get('/v4/api/products' , AllProducts)
+
+Product_router.post('/v4/api/get/products/varients/order/history' , FetchProductVarientById)
 
 module.exports = Product_router;
