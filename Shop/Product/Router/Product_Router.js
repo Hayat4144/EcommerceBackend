@@ -12,9 +12,10 @@ const { DeleteVarients } = require('../Api/varients/DltVarients');
 const { UpdataVarients } = require('../Api/varients/UpdVarients');
 const upload = require('../../../utils/upload');
 const { FetchProductById } = require('../Api/ProductById');
-const { CreateRatings } = require('../Api/Ratings/CreateRatings');
+const { CreateRatings } = require('../Api/Reviews/CreateRatings');
 const { SampleProducts } = require('../Api/SampleProducts');
 const { AllProducts } = require('../Api/AllProducts');
+const { ReadRatings } = require('../Api/Reviews/Ratings');
 
 const Product_router = express.Router();
 
@@ -65,5 +66,7 @@ Product_router.get('/v4/api/get/sample/product', SampleProducts)
 Product_router.get('/v4/api/products' , AllProducts)
 
 Product_router.post('/v4/api/get/products/varients/order/history' , FetchProductVarientById)
+
+Product_router.get('/v4/api/products/ratings/review', ReadRatings)
 
 module.exports = Product_router;
