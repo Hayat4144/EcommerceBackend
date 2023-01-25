@@ -19,7 +19,7 @@ exports.CreateRatings = AsyncFunc(async (req, res, next) => {
                 "ratings_review.$.comment": comment
             }
         }, { $new: true }, (error, data) => {
-            if (error) next(new ErrorHandler(error.message, 400))
+            if (error) return next(new ErrorHandler(error.message, 400))
 
         })
     }
@@ -34,19 +34,26 @@ exports.CreateRatings = AsyncFunc(async (req, res, next) => {
                     }
                 }
             }, { $new: true }, (error, data) => {
-                if (error) next(new ErrorHandler(error.messge, 400))
+                if (error) return next(new ErrorHandler(error.messge, 400))
             })
     }
     const GetAllRatings = await ProductModel.findById(product_id)
     const total_ratings = GetAllRatings.ratings_review;
     let stars = []
+    //  ------------------- push star value in stars array --------------------- //
     total_ratings.forEach(element => {
         stars.push(element.Star)
     });
+
+     //  ------------------- calculate total stars  --------------------- //
     const TotalStars = stars.reduce((accum, current) => {
         return accum + current;
     }, 0)
+
+     //  ------------------- avarating ratings  --------------------- //
     const average_rating = Math.round(TotalStars / stars.length)
+
+     //  ------------------- update the ratings --------------------- //
     ProductModel.findByIdAndUpdate(product_id, { average_rating }, { $new: true }, (error, data) => {
         if (error) next(new ErrorHandler(error.message, 400))
         return res.status(200).json({ data: "Thank you for rating and review ." })
