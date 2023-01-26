@@ -4,6 +4,7 @@ const ErrorHandler = require('../../../../utils/ErrorHandler');
 
 exports.CreateRatings = AsyncFunc(async (req, res, next) => {
     const { product_id, comment, Star } = req.body;
+    console.log(typeof Star);
     const IsProdcutExist = await ProductModel.findById(product_id);
     if (IsProdcutExist === null) return next(new ErrorHandler('Product does not exist', 400));
     const alreadyRated = IsProdcutExist.ratings_review.find(item => item.user.toString() === req.user_id.toString());
@@ -55,7 +56,7 @@ exports.CreateRatings = AsyncFunc(async (req, res, next) => {
 
      //  ------------------- update the ratings --------------------- //
     ProductModel.findByIdAndUpdate(product_id, { average_rating }, { $new: true }, (error, data) => {
-        if (error) next(new ErrorHandler(error.message, 400))
+        if (error) return next(new ErrorHandler(error.message, 400))
         return res.status(200).json({ data: "Thank you for rating and review ." })
     })
 
