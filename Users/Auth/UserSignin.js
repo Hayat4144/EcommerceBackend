@@ -16,7 +16,7 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
 
         // signinoptions for jwt sign
         var signOptions = {
-            expiresIn: "12d",
+            expiresIn: "10d",
             algorithm: "ES256"
         };
 
@@ -24,7 +24,7 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
         const payload = {
             id: IsUserExist._id,
             email: IsUserExist.email,
-            name: IsUserExist.name,
+            name: IsUserExist.firstName + ' ' + IsUserExist.lastName,
         }
 
         // read the private key file and sign a token if no error occured
