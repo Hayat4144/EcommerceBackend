@@ -5,7 +5,7 @@ const Product_Model = require('../model/Product_Model')
 
 exports.Get_All_Product = async (req, res, next) => {
     try {
-        let { search, sort, category, page ,rating} = req.query;
+        let { search, sort, category, page ,Star} = req.query;
         if (req.query.price) {
             var Price = JSON.stringify(req.query.price);
             Price = Price.replace(/\b(gt|lt|gte|lte)\b/g, (key, value) => `$${key}`)
@@ -53,13 +53,13 @@ exports.Get_All_Product = async (req, res, next) => {
                                 }
                             }
                         }],
-                        // filter:{
-                        //     range:{
-                        //         gte:0,
-                        //         lte:Number(rating),
-                        //         path:"average_rating"
-                        //     }
-                        // }
+                        filter:{
+                            range:{
+                                gte:Number(Star),
+                                lte:5,
+                                path:"average_rating"
+                            }
+                        }
                     }
                 }
             },
