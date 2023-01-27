@@ -29,7 +29,7 @@ exports.UserChangePassword = AsyncFunc(async (req, res, next) => {
                     })
             }
             else {
-                next(new ErrorHandler('Sorry, your password is wrong try again.', 400))
+                next(new ErrorHandler('Invalid password', 400))
             }
         })
 
