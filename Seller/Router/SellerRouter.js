@@ -17,12 +17,12 @@ const { SellerEmailValidate, Seller_Email_Validation_Error } = require('../valid
 const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../validation/ConfirmPasswordValidation');
 const { SellerConfirmEmailValidate, Seller_Confirm_Email_Validation_Error } = require('../validation/SellerConfrimEmail');
 const upload = require('../../utils/upload');
-const { ht } = require('../../Users/Profile/ht');
+
 
 
 const SellerRouter = epxress.Router();
 
-SellerRouter.post('/hello', upload.single('avtar'), ht)
+
 
 // 1. Signup for Seller route
 SellerRouter.post('/v4/api/seller/signup', SellerValidate, Seller_Validation_Error, SignupSeller)
