@@ -3,13 +3,19 @@ const { check, validationResult } = require('express-validator')
 
 exports.UserValidate = [
     check('password')
-        .isStrongPassword()
+        .isStrongPassword({
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1,
+          })
         .trim()
         .escape()
         .withMessage('password must be contain symbol,number,capital and small letter.')
         .custom((value, { req }) => {
             if (value !== req.body.confirmpassword) {
-                throw new Error("passwords doesn't match");
+                throw new Error("password doesn't match");
             } else {
                 return value;
             }
