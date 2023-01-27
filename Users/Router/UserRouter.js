@@ -24,7 +24,9 @@ const { OrderValidation, MakeOrder_Validation_Error } = require('../Validation/M
 const { UserOrder } = require('../Order/UserOrder');
 const UserRouter = express.Router();
 
-
+UserRouter.get('/hello', (req,res)=>{
+    return res.status(200).send('hello world')
+})
 
 // 1. Signup for user
 UserRouter.post('/v3/api/user/signup', UserValidate, User_Validation_Error, UserSignup)
