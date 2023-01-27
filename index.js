@@ -18,7 +18,8 @@ const BannerRouter = require("./Shop/Banner/router/BannerRouter");
 const stripe = require('stripe')(process.env.STRIPE_PUBLISHABLE_KEY)
 
 
-const app = http2Express(express)
+// const app = http2Express(express)
+const app = express();
 
 const corsOptions = {
   origin: true,
@@ -62,15 +63,15 @@ app.get('/' ,(req,res)=>{
   return res.status(200).json({name:"hello world"})
 })
 
-const options = {
-  key:fs.readFileSync('server.key'),
-  cert:fs.readFileSync('server.crt'),
-  allowHTTP1: true
-}
+// const options = {
+//   key:fs.readFileSync('server.key'),
+//   cert:fs.readFileSync('server.crt'),
+//   allowHTTP1: true
+// }
 
-const server = http2.createSecureServer(options,app)
+// const server = http2.createSecureServer(options,app)
 
-server.listen(process.env.PORT, (err) => {
+app.listen(process.env.PORT, (err) => {
   err ? console.log(err) : console.log("running at port 5000");
 });
 
