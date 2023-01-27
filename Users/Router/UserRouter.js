@@ -79,6 +79,6 @@ UserRouter.get('/v3/api/user/orders/history', UserAuthMiddleware,UserOrder)
 
 UserRouter.post('/v3/api/user/shop/order',OrderValidation,MakeOrder_Validation_Error, UserAuthMiddleware,MakeOrder)
 
-UserRouter.post('/v3/api/user/shop/confirm/payment', ConfirmPayment)
+UserRouter.post('/v3/api/user/shop/confirm/payment',UserAuthMiddleware, ConfirmPayment)
 
 module.exports = UserRouter;
