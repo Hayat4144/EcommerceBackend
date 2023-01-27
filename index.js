@@ -1,5 +1,5 @@
 const express = require("express");
-const app = express();
+const http2Express = require('http2-express-bridge')
 const dotenv = require("dotenv").config();
 const body_pareser = require("body-parser");
 const cookie_parser = require("cookie-parser");
@@ -13,8 +13,13 @@ const { CloudinaryConfiguration } = require("./Config/Cloudinary_Config");
 const cors = require("cors");
 const responsetime = require("response-time");
 const fs = require('fs');
+const http2 = require('http2')
 const BannerRouter = require("./Shop/Banner/router/BannerRouter");
 const stripe = require('stripe')(process.env.STRIPE_PUBLISHABLE_KEY)
+
+
+const app = http2Express(express)
+
 const corsOptions = {
   origin: true,
   credentials: true,
@@ -53,21 +58,17 @@ app.use(ErrorMiddleware);
 
 app.use(BannerRouter)
 
-// spdy.createServer(
-//   {
-//     key: fs.readFileSync("./server.key"),
-//     cert: fs.readFileSync("./server.crt")
-//   },
-//   app
-// ).listen(5000, (err) => {
-//   if (err) {
-//     throw new Error(err)
-//   }
-//   console.log("Listening on port 5000")
-// })
 
-app.listen(5000, (err) => {
-  err ? console.log(err) : console.log("running at port 500");
+const options = {
+  key:fs.readFileSync('server.key'),
+  cert:fs.readFileSync('server.crt'),
+  allowHTTP1: true
+}
+
+const server = http2.createSecureServer(options,app)
+
+server.listen(5000, (err) => {
+  err ? console.log(err) : console.log("running at port 5000");
 });
 
 
