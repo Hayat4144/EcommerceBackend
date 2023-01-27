@@ -67,7 +67,7 @@ const options = {
 
 const server = http2.createSecureServer(options,app)
 
-server.listen(5000, (err) => {
+server.listen(process.env.PORT, (err) => {
   err ? console.log(err) : console.log("running at port 5000");
 });
 
