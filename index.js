@@ -58,6 +58,9 @@ app.use(ErrorMiddleware);
 
 app.use(BannerRouter)
 
+app.get('/' ,(req,res)=>{
+  return res.status(200).json({name:"hello world"})
+})
 
 const options = {
   key:fs.readFileSync('server.key'),
