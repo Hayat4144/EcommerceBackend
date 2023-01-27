@@ -3,6 +3,7 @@ const Product_model = require('../model/Product_Model')
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
 const ErrorHandler = require('../../../utils/ErrorHandler')
+const fs = require('fs')
 
 
 
@@ -14,10 +15,15 @@ exports.CreateProduct = AsyncFunc(async (req, res, next) => {
             cloudinary.uploader.upload(item.path, { unique_filename: true, folder: "Shop" }, (error, data) => {
                 if (error) {
                     next(new ErrorHandler(error.message, 400))
+                    fs.unlink(item.path, (err) => {
+                        if (err) throw err;
+                    });
                     return reject({ error })
                 }
                 else {
-                    console.log(data.secure_url)
+                    fs.unlink(item.path, (err) => {
+                        if (err) throw err;
+                    });
                     return resolve(data.secure_url)
                 }
             })
@@ -50,8 +56,6 @@ exports.CreateProduct = AsyncFunc(async (req, res, next) => {
             if (error) {
                 next(new ErrorHandler(error.message, 400))
             } else {
-                // console.log(data)
-                console.log(data.get('ratings', null, { getters: true }))
                 return res.status(200).json({ data })
             }
         })
