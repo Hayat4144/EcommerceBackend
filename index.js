@@ -22,7 +22,7 @@ const stripe = require('stripe')(process.env.STRIPE_PUBLISHABLE_KEY)
 const app = express();
 
 const corsOptions = {
-  origin: true,
+  origin: "https://taj.onrender.com",
   credentials: true,
 };
 
