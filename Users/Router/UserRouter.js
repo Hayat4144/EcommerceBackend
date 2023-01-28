@@ -22,6 +22,7 @@ const { MakeOrder } = require('../Order/MakeOrder');
 const { ConfirmPayment } = require('../Order/ConfirmPayment');
 const { OrderValidation, MakeOrder_Validation_Error } = require('../Validation/MakeOrderValidations');
 const { UserOrder } = require('../Order/UserOrder');
+const { Logout } = require('../Auth/Logout');
 const UserRouter = express.Router();
 
 UserRouter.get('/hello', (req,res)=>{
@@ -33,6 +34,8 @@ UserRouter.post('/v3/api/user/signup', UserValidate, User_Validation_Error, User
 
 // 2 Sigin for user
 UserRouter.post('/v3/api/user/signin', UserSignin)
+
+UserRouter.get('/v3/api/user/logout' , Logout)
 
 // 3 Change Password for user 
 UserRouter.put('/v3/api/user/change/password', ConfrimPasswordValidate,
