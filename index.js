@@ -1,5 +1,5 @@
 const express = require("express");
-const http2Express = require('http2-express-bridge')
+const http2Express = require("http2-express-bridge");
 const dotenv = require("dotenv").config();
 const body_pareser = require("body-parser");
 const cookie_parser = require("cookie-parser");
@@ -12,20 +12,27 @@ const UserRouter = require("./Users/Router/UserRouter");
 const { CloudinaryConfiguration } = require("./Config/Cloudinary_Config");
 const cors = require("cors");
 const responsetime = require("response-time");
-const fs = require('fs');
-const http2 = require('http2')
+const fs = require("fs");
+const http2 = require("http2");
 const BannerRouter = require("./Shop/Banner/router/BannerRouter");
-const stripe = require('stripe')(process.env.STRIPE_PUBLISHABLE_KEY)
-
+const stripe = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
 
 // const app = http2Express(express)
 const app = express();
+let corsOptions;
 
-const corsOptions = {
-  origin: "https://taj.onrender.com",
-  credentials: true,
-};
-
+if (process.env.NODE_ENV === "production") {
+  corsOptions = {
+    origin: "https://taj.onrender.com",
+    credentials: true,
+  };
+}
+else{
+  corsOptions = {
+    origin: "http://localhost:5173",
+    credentials: true,
+  };
+}
 
 app.use(responsetime());
 
@@ -57,11 +64,11 @@ app.use(UserRouter);
 
 app.use(ErrorMiddleware);
 
-app.use(BannerRouter)
+app.use(BannerRouter);
 
-app.get('/' ,(req,res)=>{
-  return res.status(200).json({name:"hello world"})
-})
+app.get("/", (req, res) => {
+  return res.status(200).json({ name: "hello world" });
+});
 
 // const options = {
 //   key:fs.readFileSync('server.key'),
@@ -74,5 +81,3 @@ app.get('/' ,(req,res)=>{
 app.listen(process.env.PORT, (err) => {
   err ? console.log(err) : console.log("running at port 5000");
 });
-
-

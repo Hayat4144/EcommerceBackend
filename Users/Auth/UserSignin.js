@@ -31,10 +31,21 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
         fs.readFile('./private.ec.key', 'utf-8', (err, data) => {
             if (!err) {
                 const token = jwt.sign(payload, data, signOptions);
-                res.cookie('token', token, {
-                    expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
-                    SameSite: 'none',
-                })
+                if (process.env.NODE_ENV === 'production') {
+                    res.cookie('token', token,{
+                        expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
+                        httpOnly: true,
+                        SameSite: 'none',
+                        secure: true
+                     }
+                     )
+                }else{
+                    res.cookie('token', token, {
+                        expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
+                        SameSite: 'none',
+                    })
+                }
+                
                 return res.status(200).send({ data: 'Login Successfull.' })
             }
             else {
