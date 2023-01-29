@@ -21,7 +21,7 @@ const stripe = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
 const app = express();
 let corsOptions;
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV == "production") {
   corsOptions = {
     origin: "https://taj-beta.vercel.app/",
     credentials: true,
