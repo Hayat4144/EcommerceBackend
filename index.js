@@ -23,12 +23,14 @@ const app = express();
 let corsOptions;
 
 if (process.env.NODE_ENV === "production") {
+  console.log(process.env.NODE_ENV)
   corsOptions = {
     origin: "https://taj.onrender.com",
     credentials: true,
   };
 }
 else{
+  console.log(process.env.NODE_ENV)
   corsOptions = {
     origin: "http://localhost:5173",
     credentials: true,
