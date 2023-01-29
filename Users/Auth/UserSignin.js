@@ -35,14 +35,14 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
                     res.cookie('token', token,{
                         expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
                         httpOnly: true,
-                        SameSite: 'none',
+                        sameSite: 'none',
                         secure: true
                      }
                      )
                 }else{
                     res.cookie('token', token, {
                         expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
-                        SameSite: 'none',
+                        sameSite: 'none',
                     })
                 }
                 
