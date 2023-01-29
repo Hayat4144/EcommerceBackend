@@ -19,20 +19,11 @@ const stripe = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
 
 // const app = http2Express(express)
 const app = express();
-let corsOptions;
 
-if (process.env.NODE_ENV == "production") {
-  corsOptions = {
-    origin: "https://taj-beta.vercel.app/",
-    credentials: true,
-  };
-}
-else{
-  corsOptions = {
-    origin: "http://localhost:5173",
-    credentials: true,
-  };
-}
+const corsOptions = {
+  origin: "https://taj-beta.vercel.app/",
+  credentials: true,
+};
 
 app.use(responsetime());
 
