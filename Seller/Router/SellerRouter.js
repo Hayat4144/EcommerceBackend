@@ -16,7 +16,7 @@ const { Seller_AddressValidation, Seller_Address_validation_Error } = require('.
 const { SellerEmailValidate, Seller_Email_Validation_Error } = require('../validation/SellerEmailValidation');
 const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../validation/ConfirmPasswordValidation');
 const { SellerConfirmEmailValidate, Seller_Confirm_Email_Validation_Error } = require('../validation/SellerConfrimEmail');
-const upload = require('../../utils/upload');
+// const upload = require('../../utils/upload');
 
 
 
@@ -65,6 +65,6 @@ SellerRouter.get('/v3/api/seller/read/address', SellerAuthMiddleware, ReadSelerA
 SellerRouter.put('/v3/api/seller/update/address',
     Seller_AddressValidation, Seller_Address_validation_Error, SellerAuthMiddleware, UpdateSellerAddress)
 
-SellerRouter.post('/v3/api/seller/profile/upload', upload.single('avtar'), SellerAuthMiddleware, SellerProfileImage)
+// SellerRouter.post('/v3/api/seller/profile/upload', upload.single('avtar'), SellerAuthMiddleware, SellerProfileImage)
 
 module.exports = SellerRouter;

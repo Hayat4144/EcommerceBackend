@@ -16,7 +16,7 @@ const { UserValidate, User_Validation_Error } = require('../Validation/UserValid
 const { UserEmailValidate, User_Email_Validation_Error } = require('../Validation/UserEmailValidation');
 const { ConfirmEmailValidate, Confirm_Email_Validation_Error } = require('../Validation/EmailConfirmValidate');
 const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../../Seller/validation/ConfirmPasswordValidation');
-const upload = require('../../utils/upload');
+// const upload = require('../../utils/upload');
 const { CreateCartItem } = require('../Cart/Cart');
 const { MakeOrder } = require('../Order/MakeOrder');
 const { ConfirmPayment } = require('../Order/ConfirmPayment');
@@ -67,8 +67,8 @@ UserRouter.get('/v3/api/user/read/address', UserAuthMiddleware, ReadUserAddress)
 UserRouter.put('/v3/api/user/update/address', AddressValidation, Address_validation_Error,
     UserAuthMiddleware, UpdateUserAddress)
 
-UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, upload.single('avtar'),
-    UserProfileImage)
+// UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, upload.single('avtar'),
+//     UserProfileImage)
 
 
 UserRouter.post('/v3/api/user/create/cart', UserAuthMiddleware, CreateCartItem)
