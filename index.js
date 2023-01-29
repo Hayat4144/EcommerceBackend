@@ -23,7 +23,7 @@ let corsOptions;
 
 if (process.env.NODE_ENV === "production") {
   corsOptions = {
-    origin: "https://taj.onrender.com",
+    origin: "https://ecommerce-backend-weld.vercel.app/",
     credentials: true,
   };
 }
