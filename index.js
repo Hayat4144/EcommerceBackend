@@ -23,7 +23,7 @@ let corsOptions;
 
 if (process.env.NODE_ENV === "production") {
   corsOptions = {
-    origin: "https://taj-beta.vercel.app",
+    origin: "https://taj-beta.vercel.app/",
     credentials: true,
   };
 }
