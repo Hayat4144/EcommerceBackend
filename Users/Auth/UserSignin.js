@@ -31,12 +31,11 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
         fs.readFile('./private.ec.key', 'utf-8', (err, data) => {
             if (!err) {
                 const token = jwt.sign(payload, data, signOptions);
-                if (process.env.NODE_ENV === 'production') {
+                if (process.env.NODE_ENV === "production") {
                     res.cookie('token', token,{
                         expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
-                        httpOnly: true,
                         sameSite: 'none',
-                        secure: true
+                        secure:true
                      }
                      )
                 }else{
