@@ -23,14 +23,13 @@ const app = express();
 let corsOptions;
 
 if (process.env.NODE_ENV === "production") {
-  console.log(process.env.NODE_ENV)
+  console.log(process.env.NODE_ENV);
   corsOptions = {
     origin: "https://taj.onrender.com",
     credentials: true,
   };
-}
-else{
-  console.log(process.env.NODE_ENV)
+} else {
+  console.log(process.env.NODE_ENV);
   corsOptions = {
     origin: "http://localhost:5173",
     credentials: true,
@@ -42,9 +41,6 @@ app.use(cors(corsOptions));
 
 // configure clodinay
 CloudinaryConfiguration();
-
-//connect database
-Database_Connect();
 
 // body_parser
 app.use(body_pareser.json());
@@ -80,6 +76,9 @@ app.get("/", (req, res) => {
 
 // const server = http2.createSecureServer(options,app)
 
-app.listen(process.env.PORT, (err) => {
-  err ? console.log(err) : console.log("running at port 5000");
+//connect database
+Database_Connect().then(() => {
+  app.listen(process.env.PORT, (err) => {
+    err ? console.log(err) : console.log("running at port 5000");
+  });
 });
