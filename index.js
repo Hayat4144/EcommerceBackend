@@ -22,6 +22,7 @@ const app = express();
 let corsOptions;
 
 if (process.env.NODE_ENV === "production") {
+  console.log('yes')
   corsOptions = {
     origin: "https://ecommerce-backend-weld.vercel.app",
     credentials: true,
