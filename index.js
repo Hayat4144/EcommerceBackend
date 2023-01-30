@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === "production") {
   console.log(process.env.NODE_ENV);
   corsOptions = {
     origin: "https://taj-beta.vercel.app",
-    // credentials: true,
+    credentials: true,
   };
 } else {
   console.log(process.env.NODE_ENV);
@@ -35,6 +35,9 @@ if (process.env.NODE_ENV === "production") {
     credentials: true,
   };
 }
+
+app.set('trust proxy' ,1)
+
 app.use(responsetime());
 
 app.use(cors(corsOptions));
@@ -65,7 +68,7 @@ app.use(ErrorMiddleware);
 app.use(BannerRouter);
 
 app.get("/", (req, res) => {
-  return res.status(200).json({ name: "hello world" });
+  return res.status(200).json({ name: "hello world" }).cookie('test' ,'tesing');
 });
 
 // const options = {
