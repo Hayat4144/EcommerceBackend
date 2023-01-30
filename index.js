@@ -67,8 +67,8 @@ app.use(ErrorMiddleware);
 
 app.use(BannerRouter);
 
-app.get("/", (req, res) => {
-  return res.status(200).json({ name: "hello world" }).cookie('test' ,'tesing');
+app.get("/mom", (req, res) => {
+  return res.status(200).cookie('test' ,'tesing').json({ name: "hello world" });
 });
 
 // const options = {
