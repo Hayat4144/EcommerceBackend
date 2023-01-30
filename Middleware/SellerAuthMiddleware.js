@@ -5,8 +5,7 @@ const ErrorHandler = require('../utils/ErrorHandler')
 
 
 const SellerAuthMiddleware = (req, res, next) => {
-    const jwt_token = req.cookies.token;
-    // console.log(jwt_token)
+    const jwt_token =process.env.NODE_ENV === "production" ? req.cookies.token_production : req.cookies.token_dev;
     if (jwt_token === undefined) {
         return res.status(401).json({ error: "you are unauthorized." })
     }
