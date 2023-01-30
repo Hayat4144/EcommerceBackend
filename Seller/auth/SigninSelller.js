@@ -34,10 +34,19 @@ exports.SigninSeller = async (req, res, next) => {
             fs.readFile('./private.ec.key', 'utf-8', (err, data) => {
                 if (!err) {
                     const token = jwt.sign(payload, data, signOptions);
-                    res.cookie('token', token, {
-                        expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
-                        SameSite: 'none',
-                    })
+                    if (process.env.NODE_ENV === "production") {
+                        res.cookie('token_production', token,{
+                            expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
+                            sameSite: 'none',
+                            secure:true
+                         }
+                         )
+                    }else{
+                        res.cookie('token_dev', token, {
+                            expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
+                            sameSite: 'none',
+                        })
+                    }
                     return res.status(200).send({ data: 'Login Successfully.' })
                 }
                 else {
