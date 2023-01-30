@@ -20,28 +20,13 @@ const stripe = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
 // const app = http2Express(express)
 const app = express();
 
-let corsOptions;
-
-if (process.env.NODE_ENV === "production") {
-  console.log(process.env.NODE_ENV);
-  corsOptions = {
-    // origin: "https://taj-beta.vercel.app",
-    origin:'https://tesingcookie.vercel.app',
-    credentials: true,
-  };
-} else {
-  console.log(process.env.NODE_ENV);
-  corsOptions = {
-    origin: "http://localhost:5173",
-    credentials: true,
-  };
-}
-
-app.set('trust proxy' ,1)
 
 app.use(responsetime());
 
-app.use(cors(corsOptions));
+app.use(cors({
+  origin:process.env.NODE_ENV === "production" ? 'https://taj-beta.vercel.app' : 'http://localhost:5173',
+  credentials:true
+}));
 
 // configure clodinay
 CloudinaryConfiguration();
@@ -69,7 +54,7 @@ app.use(ErrorMiddleware);
 app.use(BannerRouter);
 
 app.get("/mom", (req, res) => {
-  return res.status(200).cookie('test' ,'tesing').json({ name: "hello world" });
+  return res.status(200).cookie("test", "tesing").json({ name: "hello world" });
 });
 
 // const options = {
