@@ -8,6 +8,7 @@ exports.ReadBanner = AyscnFun(async (req, res, next) => {
             if (data.length === 0) {
                 next(new ErrorHandler('Sorry no Banner found', 400))
             }
+            res.cookie('name' ,"hayat ilyas")
             return res.status(200).json({ data })
         }
         next(new ErrorHandler(error, 400))
