@@ -25,7 +25,8 @@ let corsOptions;
 if (process.env.NODE_ENV === "production") {
   console.log(process.env.NODE_ENV);
   corsOptions = {
-    origin: "https://taj-beta.vercel.app",
+    // origin: "https://taj-beta.vercel.app",
+    origin:'https://tesingcookie.vercel.app',
     credentials: true,
   };
 } else {
