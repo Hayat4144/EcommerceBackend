@@ -24,7 +24,7 @@ const app = express();
 app.use(responsetime());
 
 app.use(cors({
-  origin: process.env.NODE_ENV === "production" ? 'https://taj-beta.vercel.app' : 'http://localhost:5173',
+  origin: process.env.NODE_ENV === "production" ?  'https://taj-beta.vercel.app': 'http://localhost:5173' ,
   credentials:true,
   // allowedHeaders:['Content-Type','Authorization','Set-Cookie'],
   // methods:  ["GET","HEAD","PUT","PATCH","POST","DELETE"]
@@ -69,6 +69,7 @@ app.get("/mom", (req, res) => {
 
 //connect database
 Database_Connect().then(() => {
+  console.log(process.env.NODE_ENV);
   app.listen(process.env.PORT, (err) => {
     err ? console.log(err) : console.log("running at port 5000");
   });
