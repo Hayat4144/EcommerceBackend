@@ -34,7 +34,6 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
                 if (process.env.NODE_ENV === "production") {
                     res.cookie('token', token,{
                         expires: new Date(Date.now() + 864000000), // for 10 days in production only 864000000
-                        secure:true,
                         sameSite:'None'
                      }
                      )
@@ -42,7 +41,7 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
                     res.cookie('token_dev', token, {
                         expires: new Date(Date.now() + 864000000), 
                         secure :true,
-                        sameSite:'none'
+                        sameSite:'None'
                     })
                 }
                 
