@@ -46,7 +46,7 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
                     })
                 }
                 
-                return res.status(200).send({ data: 'Login Successfull.' })
+                return res.status(200).send({ data: 'Login Successfull.' , token })
             }
             else {
                 next(new ErrorHandler(err, 500))

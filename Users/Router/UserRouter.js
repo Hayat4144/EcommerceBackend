@@ -23,6 +23,7 @@ const { ConfirmPayment } = require('../Order/ConfirmPayment');
 const { OrderValidation, MakeOrder_Validation_Error } = require('../Validation/MakeOrderValidations');
 const { UserOrder } = require('../Order/UserOrder');
 const { Logout } = require('../Auth/Logout');
+const { CheckAuth } = require('../Auth/CheckAuth');
 const UserRouter = express.Router();
 
 UserRouter.get('/hello', (req,res)=>{
@@ -36,6 +37,8 @@ UserRouter.post('/v3/api/user/signup', UserValidate, User_Validation_Error, User
 UserRouter.post('/v3/api/user/signin', UserSignin)
 
 UserRouter.get('/v3/api/user/logout' , Logout)
+
+UserRouter.get('/v3/is/user/authenticate', UserAuthMiddleware,CheckAuth)
 
 // 3 Change Password for user 
 UserRouter.put('/v3/api/user/change/password', ConfrimPasswordValidate,
