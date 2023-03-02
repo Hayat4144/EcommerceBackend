@@ -4,7 +4,6 @@ exports.SellerValidate = [
     check('password')
         .isStrongPassword()
         .trim()
-        .escape()
         .withMessage('password must be contain symbol,number,capital and small letter.')
         .custom((value, { req, loc, path }) => {
             if (value !== req.body.confirmpassword) {
