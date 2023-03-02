@@ -16,6 +16,7 @@ const { Seller_AddressValidation, Seller_Address_validation_Error } = require('.
 const { SellerEmailValidate, Seller_Email_Validation_Error } = require('../validation/SellerEmailValidation');
 const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../validation/ConfirmPasswordValidation');
 const { SellerConfirmEmailValidate, Seller_Confirm_Email_Validation_Error } = require('../validation/SellerConfrimEmail');
+const { SellerLogut } = require('../auth/SellerLogut');
 // const upload = require('../../utils/upload');
 
 
@@ -29,6 +30,9 @@ SellerRouter.post('/v4/api/seller/signup', SellerValidate, Seller_Validation_Err
 
 // 2 Signin for seller route
 SellerRouter.post('/v4/api/seller/signin', SigninSeller)
+
+
+SellerRouter.post('/v4/api/seller/logout' , SellerLogut)
 
 // 3 change password for seller
 SellerRouter.put('/v4/api/seller/change/password', ConfrimPasswordValidate,
