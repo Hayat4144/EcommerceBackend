@@ -60,10 +60,10 @@ SellerRouter.put('/v4/api/seller/email/change/done', SellerConfirmEmailValidate,
 
 
 // 7 user address create 
-SellerRouter.post('/v3/api/seller/create/address', Seller_AddressValidation,
+SellerRouter.post('/v4/api/seller/create/address', Seller_AddressValidation,
     Seller_Address_validation_Error, SellerAuthMiddleware, CreateSellerAddress)
 
-SellerRouter.get('/v3/api/seller/read/address', SellerAuthMiddleware, ReadSelerAddress)
+SellerRouter.get('/v4/api/seller/read/address', SellerAuthMiddleware, ReadSelerAddress)
 
 
 SellerRouter.put('/v3/api/seller/update/address',
