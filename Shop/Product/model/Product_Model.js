@@ -34,7 +34,8 @@ const ProductSchema = new mongoose.Schema({
     varients: {
         cnt: {
             type: Number,
-            max: 40
+            max: 40,
+            default:1
         },
         attributes: [
             {
