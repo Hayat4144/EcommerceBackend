@@ -8,8 +8,9 @@ const fs = require('fs')
 
 
 exports.CreateProduct = AsyncFunc(async (req, res, next) => {
-    const { name, description, cnt, price, varients, category, brand, attributes_name } = req.body;
+    let { name, description, cnt, price, varients, category, brand, attributes_name } = req.body;
     const image_files = req.files;
+    attributes_name = JSON.parse(attributes_name)
     const ImageUploadPromise = image_files.map(item => {
         return new Promise((resolve, reject) => {
             cloudinary.uploader.upload(item.path, { unique_filename: true, folder: "Shop" }, (error, data) => {
@@ -48,7 +49,6 @@ exports.CreateProduct = AsyncFunc(async (req, res, next) => {
                 images: data
             },
             varients: {
-                cnt,
                 attributes
             },
             seller: req.user_id
