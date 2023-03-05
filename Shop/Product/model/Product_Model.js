@@ -48,6 +48,10 @@ const ProductSchema = new mongoose.Schema({
             }
         ]
     },
+    stock:{
+        type:Number,
+        required:true,
+    },
     brand: {
         type: String,
         max: 50,
