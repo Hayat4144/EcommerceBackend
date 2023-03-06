@@ -10,20 +10,21 @@ const { Get_All_ProductVarients, fetch_Product_By_Id_Or_ProductId, fetchProductV
 const { SimilarProducts } = require('../Api/SimilarProducts');
 const { DeleteVarients } = require('../Api/varients/DltVarients');
 const { UpdataVarients } = require('../Api/varients/UpdVarients');
-// const upload = require('../../../utils/upload');
 const { FetchProductById } = require('../Api/ProductById');
 const { CreateRatings } = require('../Api/Reviews/CreateRatings');
 const { SampleProducts } = require('../Api/SampleProducts');
 const { AllProducts } = require('../Api/AllProducts');
 const { ReadRatings } = require('../Api/Reviews/Ratings');
-
+const multer = require('multer');
+const { ProductValidtion, ProductValidationError } = require('../Validation/CreateProductValidations');
+const fileupload = multer();
 const Product_router = express.Router();
 
 
 // Product Routers
 
 // 1. Create Product 
-// Product_router.post('/v4/api/create/product', upload.array('product_image', 4), SellerAuthMiddleware, CreateProduct)
+Product_router.post('/v4/api/create/product', SellerAuthMiddleware, fileupload.array('product_image', 4), ProductValidtion, ProductValidationError, CreateProduct)
 
 Product_router.get('/v4/api/product/:id', FetchProductById)
 
@@ -63,9 +64,9 @@ Product_router.post('/v4/api/product/reviews', UserAuthMiddleware, CreateRatings
 
 Product_router.get('/v4/api/get/similar/product', SimilarProducts)
 Product_router.get('/v4/api/get/sample/product', SampleProducts)
-Product_router.get('/v4/api/products' , AllProducts)
+Product_router.get('/v4/api/products', AllProducts)
 
-Product_router.post('/v4/api/get/products/varients/order/history' , FetchProductVarientById)
+Product_router.post('/v4/api/get/products/varients/order/history', FetchProductVarientById)
 
 Product_router.get('/v4/api/products/ratings/review', ReadRatings)
 

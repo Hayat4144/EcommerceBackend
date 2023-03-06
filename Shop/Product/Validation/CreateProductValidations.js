@@ -1,38 +1,53 @@
-const {check,ValidationResult, validationResult} = require('express-validator')
+const { check, ValidationResult, validationResult } = require('express-validator')
+const ErrorHandler = require('../../../utils/ErrorHandler')
+const mongoose = require('mongoose')
 
 exports.ProductValidtion = [
     check('name')
-    .isLength({max:50,min:4})
-    .escape()
-    .withMessage('Name should be 5-50 character long.'),
-    check('brand')
-    .isLength({min:4,max:30})
-    .escape()
-    .withMessage('Brand should be 5-30 character long.'),
+        .isLength({ max: 300, min: 4 })
+        .withMessage('Name should be 5-50 character long.'),
     check('description')
-    .isLength({min:4,max:200})
-    .escape()
-    .withMessage('Description should be 4-200 character long.'),
+        .escape()
+        .trim()
+        .isLength({ min: 4, max: 200 })
+        .withMessage('Description should be 4-200 character long.'),
     check('price')
-    .isNumeric()
-    .isLength({min:2,max:6})
-    .escape()
-    .trim()
-    .withMessage('Price only contians number .'),
+        .escape()
+        .trim()
+        .isLength({ min: 2, max: 6 })
+        .withMessage('Price between be 10 - 100000')
+        .custom(value => {
+            value = parseInt(value)
+            if (!isNaN(value)) return new ErrorHandler('Price only contians number', 400);
+            return value
+        }),
+    check('stock')
+        .escape()
+        .trim()
+        .isLength({ min: 2, max: 6 })
+        .withMessage('Stock between be 10 to 1000 .')
+        .custom(value => {
+            value = parseInt(value)
+            if (!isNaN(value)) return new ErrorHandler('Stock only contians number', 400);
+            return value
+        }),
     check('attributes_name')
-    .isString()
-    .escape()
-    .isLength({min:4,max:100})
-    .withMessage('Attributes can not be empty.')
+        .isString()
+        .trim()
+        .isLength({ min: 4, max: 200 })
+        .withMessage('Attributes can not be empty.'),
+    check('category')
+        .isMongoId()
+        .withMessage('category is not a valid id.')
+
 ]
 
-
-exports.ProductValidationError = (req,res,next)=>{
-    const errors = validationResult(req) ;
+exports.ProductValidationError = (req, res, next) => {
+    const errors = validationResult(req);
+    console.log(req.body)
     if (!errors.isEmpty()) {
-        res.status(400).json({ error: errors.array()[0].msg })
+        // console.log(errors.array());
+        return res.status(400).json({ error: errors.array()[0].msg });
     }
-    else {
-        next();
-    } 
+    next();
 }
