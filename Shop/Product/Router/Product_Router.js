@@ -17,6 +17,7 @@ const { AllProducts } = require('../Api/AllProducts');
 const { ReadRatings } = require('../Api/Reviews/Ratings');
 const multer = require('multer');
 const { ProductValidtion, ProductValidationError } = require('../Validation/CreateProductValidations');
+const { SellerReadProduct, FetchSellerProduct } = require('../Api/SellerReadProduct');
 const fileupload = multer();
 const Product_router = express.Router();
 
@@ -32,6 +33,9 @@ Product_router.get('/v4/api/product/:id', FetchProductById)
 Product_router.get('/v4/api/get_all/product', Get_All_Product)
 
 Product_router.get('/v4/api/getproduct_by_category', GetProductBYCategory)
+
+Product_router.get('/v4/api/seller/read/product', SellerAuthMiddleware, SellerReadProduct)
+Product_router.get('/v4/api/seller/products', SellerAuthMiddleware, FetchSellerProduct)
 
 // 3 Delete product 
 Product_router.delete('/v4/api/delete/product', SellerAuthMiddleware, DeleteProduct)
