@@ -17,6 +17,8 @@ const { SellerEmailValidate, Seller_Email_Validation_Error } = require('../valid
 const { ConfrimPasswordValidate, Confirm_Password_Validation_Error } = require('../validation/ConfirmPasswordValidation');
 const { SellerConfirmEmailValidate, Seller_Confirm_Email_Validation_Error } = require('../validation/SellerConfrimEmail');
 const { SellerLogut } = require('../auth/SellerLogut');
+const { ReadOrder } = require('../Order/ReadOrder');
+const { SellerOrder } = require('../Order/OrderSample');
 // const upload = require('../../utils/upload');
 
 
@@ -32,7 +34,7 @@ SellerRouter.post('/v4/api/seller/signup', SellerValidate, Seller_Validation_Err
 SellerRouter.post('/v4/api/seller/signin', SigninSeller)
 
 
-SellerRouter.post('/v4/api/seller/logout' , SellerLogut)
+SellerRouter.post('/v4/api/seller/logout', SellerLogut)
 
 // 3 change password for seller
 SellerRouter.put('/v4/api/seller/change/password', ConfrimPasswordValidate,
@@ -68,6 +70,10 @@ SellerRouter.get('/v4/api/seller/read/address', SellerAuthMiddleware, ReadSelerA
 
 SellerRouter.put('/v3/api/seller/update/address',
     Seller_AddressValidation, Seller_Address_validation_Error, SellerAuthMiddleware, UpdateSellerAddress)
+
+SellerRouter.post('/v4/api/seller/order', SellerAuthMiddleware, SellerOrder)
+
+SellerRouter.get('/v4/api/seller/orderbyId', SellerAuthMiddleware, ReadOrder)
 
 // SellerRouter.post('/v3/api/seller/profile/upload', upload.single('avtar'), SellerAuthMiddleware, SellerProfileImage)
 
