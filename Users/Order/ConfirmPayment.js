@@ -28,11 +28,11 @@ exports.ConfirmPayment = AsyncFunc(async (req, res, next) => {
             element._id == product.varientId &&
             !productData.some((data) => data._id === element._id)
           ) {
-            productData.push({ ...product, price: element.price });
+            productData.push({ ...product, price: element.price, seller: element.seller });
           }
         });
       });
-
+      console.log(productData);
       // --------------- total Price ----------------- //
       const totalPrice = productData.reduce((accum, current) => {
         return accum + current.price * current.quantity;
@@ -47,7 +47,7 @@ exports.ConfirmPayment = AsyncFunc(async (req, res, next) => {
       console.log(createOrder)
       // ---------------- if error while creating order throw it --------------------- //
       if (!createOrder) return next(new ErrorHandler(createOrder));
-      return res.status(200).json({data:"your order has been placed successfully."})
+      return res.status(200).json({ data: "your order has been placed successfully." })
     case "CARD":
       await stripe.paymentIntents
         .confirm(payment_intentId, {

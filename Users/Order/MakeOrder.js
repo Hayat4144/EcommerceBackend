@@ -64,7 +64,7 @@ exports.MakeOrder = AsyncFunc(async (req, res, next) => {
         element._id == product.varientId &&
         !productData.some((data) => data._id === element._id)
       ) {
-        productData.push({ ...product, price: element.price });
+        productData.push({ ...product, price: element.price , seller: element.seller});
       }
     });
   });
@@ -80,6 +80,8 @@ exports.MakeOrder = AsyncFunc(async (req, res, next) => {
     products: productData,
     totalPrice
   });
+
+  console.log(createOrder);
 
   // ---------------- if error while creating order throw it --------------------- //
   if (!createOrder) return next(new ErrorHandler(createOrder));
