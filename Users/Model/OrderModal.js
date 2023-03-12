@@ -20,6 +20,10 @@ const OrderSchema = new mongoose.Schema({
             price: {
                 type: Number,
                 required: [true, 'price can not be empty.']
+            },
+            seller:{
+                type:mongoose.SchemaTypes.ObjectId,
+                required:[true,"seller can't be empty."]
             }
         }
     ],
