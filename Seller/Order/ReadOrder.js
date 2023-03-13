@@ -16,6 +16,6 @@ exports.ReadOrder = AsyncFunc(async (req, res, next) => {
             if (err) return next(new ErrorHandler(err.message, 400));
             console.log(doc);
             if (doc.length === 0) return res.status(404).json({ data: 'No order data found' });
-            return res.status(200).json({ data: doc })
+            return res.status(200).json({ data: [doc] })
         })
 })
