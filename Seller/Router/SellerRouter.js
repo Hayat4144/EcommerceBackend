@@ -19,6 +19,8 @@ const { SellerConfirmEmailValidate, Seller_Confirm_Email_Validation_Error } = re
 const { SellerLogut } = require('../auth/SellerLogut');
 const { ReadOrder } = require('../Order/ReadOrder');
 const { SellerOrder } = require('../Order/OrderSample');
+const { TotalOrders, TodayOrders } = require('../Order/TotalOrders');
+const { UpdateOrder } = require('../Order/UpdateOrder');
 // const upload = require('../../utils/upload');
 
 
@@ -75,6 +77,11 @@ SellerRouter.post('/v4/api/seller/order', SellerAuthMiddleware, SellerOrder)
 
 SellerRouter.get('/v4/api/seller/orderbyId', SellerAuthMiddleware, ReadOrder)
 
+SellerRouter.get('/v4/api/seller/total/orders', SellerAuthMiddleware,TotalOrders)
+
+SellerRouter.get('/v4/api/seller/today/orders',SellerAuthMiddleware,TodayOrders);
+
+SellerRouter.post('/v4/api/seller/order/update', SellerAuthMiddleware, UpdateOrder)
 // SellerRouter.post('/v3/api/seller/profile/upload', upload.single('avtar'), SellerAuthMiddleware, SellerProfileImage)
 
 module.exports = SellerRouter;
