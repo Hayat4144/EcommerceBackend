@@ -4,6 +4,7 @@ const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
 const ErrorHandler = require('../../../utils/ErrorHandler')
 const fs = require('fs')
+const sharp = require('sharp')
 
 
 
@@ -13,25 +14,40 @@ exports.CreateProduct = AsyncFunc(async (req, res, next) => {
     attributes_name = JSON.parse(attributes_name)
     price = parseInt(price)
     stock = parseInt(stock)
-    const ImageUploadPromise = image_files.map(item => {
-        return new Promise((resolve, reject) => {
-            let stream = cloudinary.uploader.upload_stream({ unique_filename: true, folder: "Shop" }, (error, data) => {
+    const uploadImage = (item) => {
+        return new Promise(async (resolve, reject) => {
+
+            const imageBuffer = Buffer.from(item.buffer);
+            // Resize image to 800x600
+            
+            const resizedImageBuffer = await sharp(imageBuffer)
+                .resize(800, 600)
+                .toBuffer();
+
+            // Compress image with quality set to 70
+            const compressedImageBuffer = await sharp(resizedImageBuffer)
+                .jpeg({ quality: 70 })
+                .toBuffer();
+
+
+            // Remove metadata from the image
+            const strippedImageBuffer = await sharp(compressedImageBuffer)
+                .withMetadata({ orientation: undefined })
+                .toBuffer();
+            const stream = cloudinary.uploader.upload_stream({ unique_filename: true, folder: "Shop", chunk_size: 6000000 }, (error, data) => {
                 if (error) {
-                    next(new ErrorHandler(error.message, 400))
-                    return reject({ error })
-                }
-                else {
-                    console.log(data.secure_url);
-                    return resolve({ url: data.secure_url, publicId: data.public_id })
+                    reject(error)
+                } else {
+                    resolve({ url: data.secure_url, publicId: data.public_id })
                 }
             })
-            streamifier.createReadStream(item.buffer).pipe(stream)
-
+            streamifier.createReadStream(strippedImageBuffer).pipe(stream)
         })
+    }
 
-    })
+    const ImageUploadPromise = Promise.all(image_files.map(item => uploadImage(item)))
 
-    await Promise.all(ImageUploadPromise).then((data) => {
+    ImageUploadPromise.then((data) => {
         console.log(data);
         let attributes = []
         attributes_name.forEach(element => {
@@ -39,10 +55,7 @@ exports.CreateProduct = AsyncFunc(async (req, res, next) => {
                 name: element
             })
         });
-        let image_array = [];
-        data.map(images => {
-            image_array.push(images)
-        })
+        let image_array = data;
         Product_model.create({
             name,
             description,
@@ -64,4 +77,5 @@ exports.CreateProduct = AsyncFunc(async (req, res, next) => {
     }).catch((error) => {
         res.status(400).json({ error })
     })
+
 }) 
