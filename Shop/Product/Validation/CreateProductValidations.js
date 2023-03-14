@@ -32,7 +32,6 @@ exports.ProductValidtion = [
             return value
         }),
     check('attributes_name')
-        .isString()
         .trim()
         .isLength({ min: 4, max: 200 })
         .withMessage('Attributes can not be empty.'),
