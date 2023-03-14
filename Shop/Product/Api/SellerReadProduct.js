@@ -56,7 +56,7 @@ exports.FetchSellerProduct = AsyncFunc(async (req, res, next) => {
 
     ProductModel.find({
         seller: req.user_id
-    }).skip(pagination(10)).exec((err, doc) => {
+    }).skip(pagination(10)).limit(10).exec((err, doc) => {
         if (err) return new ErrorHandler(err.message, 400);
         if (doc.length < 1) return res.status(404).json({ data: 'no product found' })
         return res.status(200).json({ data: doc})
