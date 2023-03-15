@@ -53,12 +53,19 @@ exports.FetchSellerProduct = AsyncFunc(async (req, res, next) => {
         const skip = resultPerPage * (page - 1)
         return skip;
     }
-
-    ProductModel.find({
-        seller: req.user_id
-    }).skip(pagination(10)).limit(10).exec((err, doc) => {
-        if (err) return new ErrorHandler(err.message, 400);
-        if (doc.length < 1) return res.status(404).json({ data: 'no product found' })
-        return res.status(200).json({ data: doc})
+    ProductModel.countDocuments({ seller: req.user_id }, (error, totalCount) => {
+        if (error) return next(new ErrorHandler(error.message, 400));
+        ProductModel.find({
+            seller: req.user_id
+        }).skip(pagination(10)).limit(10).exec((err, doc) => {
+            if (err) return new ErrorHandler(err.message, 400);
+            if (doc.length < 1) return res.status(404).json({ data: 'no product found' })
+            return res.json({
+                totalCount: totalCount,
+                count: doc.length,
+                data: doc
+            });
+        })
     })
+
 })
