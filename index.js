@@ -24,7 +24,7 @@ const app = express();
 app.use(responsetime());
 
 app.use(cors({
-  origin: process.env.NODE_ENV === "production" ?  'https://taj-beta.vercel.app': 'http://localhost:5173' ,
+  origin: process.env.NODE_ENV === "production" ?  ['https://taj-beta.vercel.app', 'https://dashboard-sigma-orcin.vercel.app']: 'http://localhost:5173' ,
   credentials:true,
   // allowedHeaders:['Content-Type','Authorization','Set-Cookie'],
   // methods:  ["GET","HEAD","PUT","PATCH","POST","DELETE"]
