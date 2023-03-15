@@ -47,7 +47,7 @@ exports.SigninSeller = async (req, res, next) => {
                             sameSite: 'none',
                         })
                     }
-                    return res.status(200).send({ data: 'Login Successfully.' })
+                    return res.status(200).send({ data: 'Login Successfully.' ,token })
                 }
                 else {
                     throw err;
