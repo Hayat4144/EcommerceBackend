@@ -12,24 +12,43 @@ const UserRouter = require("./Users/Router/UserRouter");
 const { CloudinaryConfiguration } = require("./Config/Cloudinary_Config");
 const cors = require("cors");
 const responsetime = require("response-time");
-const fs = require("fs");
-const http2 = require("http2");
 const BannerRouter = require("./Shop/Banner/router/BannerRouter");
 const stripe = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
+let logger = require("./logger/index");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const xss = require("xss-clean");
+const mongoSanitize = require("express-mongo-sanitize");
 
-// const app = http2Express(express)
 const app = express();
-
-
 app.use(responsetime());
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
 
-app.use(cors({
-  origin: process.env.NODE_ENV === "production" ?  ['https://frontend-hayat4144.vercel.app','https://dashboard-hayat4144.vercel.app']: 'http://localhost:5173' ,
-  credentials:true,
-  // allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
-  // methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-  optionsSuccessStatus: 200 
-}));
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 1000, // Limit each IP to 1000 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+// Apply the rate limiting middleware to all requests
+app.use(limiter);
+
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? [
+            "https://frontend-hayat4144.vercel.app",
+            "https://dashboard-hayat4144.vercel.app",
+          ]
+        : "http://localhost:5173",
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
 
 // configure clodinay
 CloudinaryConfiguration();
@@ -51,27 +70,20 @@ app.use(Seller_router);
 
 // user router
 app.use(UserRouter);
+app.get("/mom", (req, res) => {
+  const { name } = req.query;
+  console.log(name);
+  return res.status(200).cookie("test", "tesing").json({ name: "hello world" });
+});
 
 app.use(ErrorMiddleware);
 
 app.use(BannerRouter);
 
-app.get("/mom", (req, res) => {
-  return res.status(200).cookie("test", "tesing").json({ name: "hello world" });
-});
-
-// const options = {
-//   key:fs.readFileSync('server.key'),
-//   cert:fs.readFileSync('server.crt'),
-//   allowHTTP1: true
-// }
-
-// const server = http2.createSecureServer(options,app)
-
 //connect database
 Database_Connect().then(() => {
-  console.log(process.env.NODE_ENV);
+  logger.info(`node environment is ${process.env.NODE_ENV}`);
   app.listen(process.env.PORT, (err) => {
-    err ? console.log(err) : console.log("running at port 5000");
+    err ? logger.error(err) : logger.info("running at port 5000");
   });
 });
