@@ -1,9 +1,10 @@
-const { Developmentlogger } = require("./DevelopmentloggerConfig");
-const { ProductionloggerConfig } = require("./Productionlogger");
+const LoggerConfiguration = require('./LoggerConfig')
+
+let  LoggerConfig = new LoggerConfiguration();
 
 let logger = null;
 process.env.NODE_ENV === "production"
-  ? (logger = ProductionloggerConfig())
-  : (logger = Developmentlogger());
+  ? (logger = LoggerConfig.Productionlogger())
+  : (logger = LoggerConfig.Developmentlogger());
 
 module.exports = logger;
