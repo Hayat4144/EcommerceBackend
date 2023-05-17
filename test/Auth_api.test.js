@@ -3,9 +3,12 @@ const baseURL = "http://localhost:5000";
 const randomEmail = require("random-email");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const mongoose = require("mongoose");
+const responseTime = require("response-time");
 
 jest.mock("jsonwebtoken");
 jest.mock("fs");
+jest.mock("mongoose");
 
 describe("POST Signup Endpoint test", () => {
   afterEach(jest.clearAllMocks);
@@ -76,6 +79,7 @@ describe("POST Signup Endpoint test", () => {
 });
 
 describe("API endpoints test for signin", () => {
+  afterEach(jest.clearAllMocks);
   test("should return 400 if credential not provide", async () => {
     const credential = null;
     const response = await request(baseURL)
@@ -136,5 +140,39 @@ describe("API endpoints test for signin", () => {
       }
     });
     expect(fs.readFile).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Test Logout Api", () => {
+  afterEach(jest.clearAllMocks);
+
+  test("should return 401 if the jwt_token is not found", async () => {
+    const response = await request(baseURL).get("/v3/api/user/logout");
+    expect(response.statusCode).toBe(401);
+  });
+
+  test("should return 401 if the jwt_token is invalid", async () => {
+    const response = await request(baseURL)
+      .get("/v3/api/user/logout")
+      .set("Cookie", "token_dev=sdfjsldkfjslfdj");
+    expect(response.statusCode).toBe(401);
+  });
+
+  test("should return 200 if the jwt_token is valid", async () => {
+    const payload = {
+      id: new mongoose.Types.ObjectId(),
+      email: "mom80@gmail.com",
+      name: "desginer hai ham",
+    };
+    const sign_option = { expiresIn: "10d", algorithm: ["ES256"] };
+    fs.readFile("./private.ec.key", "utf8", async (err, data) => {
+      if (!err) {
+        const token = jwt.sign(payload, data, sign_option);
+        const response = await request(baseURL)
+          .get("/v3/api/user/logout")
+          .set("Cookie", `token_dev=${token}`);
+        expect(response.statusCode).toBe(200);
+      }
+    });
   });
 });
