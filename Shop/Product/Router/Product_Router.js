@@ -1,77 +1,138 @@
-const express = require('express');
-const { CreateProduct } = require('../Api/CreateProduct');
-const { DeleteProduct } = require('../Api/DeleteProduct');
-const { Get_All_Product, GetProductBYCategory } = require('../Api/Get_All_Product');
-const { UpdateProduct } = require('../Api/UpdataProduct');
-const SellerAuthMiddleware = require('../../../Middleware/SellerAuthMiddleware');
-const UserAuthMiddleware = require('../../../Middleware/UserAuthMiddleware');
-const { CreateProductVarient } = require('../Api/varients/CrProductVarient');
-const { Get_All_ProductVarients, fetch_Product_By_Id_Or_ProductId, fetchProductVarient, FetchProductVarientById } = require('../Api/varients/FetchProductVarients');
-const { SimilarProducts } = require('../Api/SimilarProducts');
-const { DeleteVarients } = require('../Api/varients/DltVarients');
-const { UpdataVarients } = require('../Api/varients/UpdVarients');
-const { FetchProductById } = require('../Api/ProductById');
-const { CreateRatings } = require('../Api/Reviews/CreateRatings');
-const { SampleProducts } = require('../Api/SampleProducts');
-const { AllProducts } = require('../Api/AllProducts');
-const { ReadRatings } = require('../Api/Reviews/Ratings');
-const multer = require('multer');
-const { ProductValidtion, ProductValidationError } = require('../Validation/CreateProductValidations');
-const { SellerReadProduct, FetchSellerProduct } = require('../Api/SellerReadProduct');
+const express = require("express");
+const { CreateProduct } = require("../Api/CreateProduct");
+const { DeleteProduct } = require("../Api/DeleteProduct");
+const {
+  Get_All_Product,
+  GetProductBYCategory,
+} = require("../Api/Get_All_Product");
+const { UpdateProduct } = require("../Api/UpdataProduct");
+const SellerAuthMiddleware = require("../../../Middleware/SellerAuthMiddleware");
+const UserAuthMiddleware = require("../../../Middleware/UserAuthMiddleware");
+const { CreateProductVarient } = require("../Api/varients/CrProductVarient");
+const {
+  Get_All_ProductVarients,
+  fetch_Product_By_Id_Or_ProductId,
+  fetchProductVarient,
+  FetchProductVarientById,
+} = require("../Api/varients/FetchProductVarients");
+const { SimilarProducts } = require("../Api/SimilarProducts");
+const { DeleteVarients } = require("../Api/varients/DltVarients");
+const { UpdataVarients } = require("../Api/varients/UpdVarients");
+const { FetchProductById } = require("../Api/ProductById");
+const { CreateRatings } = require("../Api/Reviews/CreateRatings");
+const { SampleProducts } = require("../Api/SampleProducts");
+const { AllProducts } = require("../Api/AllProducts");
+const { ReadRatings } = require("../Api/Reviews/Ratings");
+const multer = require("multer");
+const {
+  ProductValidtion,
+  ProductValidationError,
+} = require("../Validation/CreateProductValidations");
+const {
+  SellerReadProduct,
+  FetchSellerProduct,
+} = require("../Api/SellerReadProduct");
 const fileupload = multer();
 const Product_router = express.Router();
 
-
 // Product Routers
 
-// 1. Create Product 
-Product_router.post('/v4/api/create/product', SellerAuthMiddleware, fileupload.array('product_image', 4), ProductValidtion, ProductValidationError, CreateProduct)
+// 1. Create Product
+Product_router.post(
+  "/v4/api/create/product",
+  SellerAuthMiddleware,
+  fileupload.array("product_image", 4),
+  ProductValidtion,
+  ProductValidationError,
+  CreateProduct
+);
 
-Product_router.get('/v4/api/product/:id', FetchProductById)
+Product_router.get("/v4/api/product/:id", FetchProductById);
 
-// 2. get all product 
-Product_router.get('/v4/api/get_all/product', Get_All_Product)
+// 2. get all product
+Product_router.get("/v4/api/get_all/product", Get_All_Product);
 
-Product_router.get('/v4/api/getproduct_by_category', GetProductBYCategory)
+Product_router.get("/v4/api/getproduct_by_category", GetProductBYCategory);
 
-Product_router.get('/v4/api/seller/read/product', SellerAuthMiddleware, SellerReadProduct)
-Product_router.get('/v4/api/seller/products', SellerAuthMiddleware, FetchSellerProduct)
+Product_router.get(
+  "/v4/api/seller/read/product",
+  SellerAuthMiddleware,
+  SellerReadProduct
+);
+Product_router.get(
+  "/v4/api/seller/products",
+  SellerAuthMiddleware,
+  FetchSellerProduct
+);
 
-// 3 Delete product 
-Product_router.delete('/v4/api/delete/product', SellerAuthMiddleware, DeleteProduct)
+// 3 Delete product
+Product_router.delete(
+  "/v4/api/delete/product",
+  SellerAuthMiddleware,
+  DeleteProduct
+);
 
 // 4. Update Product
-Product_router.put('/v4/api/update/product', SellerAuthMiddleware, UpdateProduct)
+Product_router.put(
+  "/v4/api/update/product",
+  SellerAuthMiddleware,
+  UpdateProduct
+);
 
 //  Product Varients
-Product_router.get('/v3/api/product/varientById/:id', fetchProductVarient)
+Product_router.get("/v3/api/product/varientById/:id", fetchProductVarient);
 
 // 5. Create Product varient
-Product_router.post('/v4/api/create/product/varient', SellerAuthMiddleware, CreateProductVarient)
-
+Product_router.post(
+  "/v4/api/create/product/varient",
+  SellerAuthMiddleware,
+  CreateProductVarient
+);
 
 // 6. fetch prduct varient
-Product_router.get('/v4/api/get_all/product/varients', SellerAuthMiddleware, Get_All_ProductVarients)
+Product_router.get(
+  "/v4/api/get_all/product/varients",
+  SellerAuthMiddleware,
+  Get_All_ProductVarients
+);
 
 //  7 . fetch product by varient id or product id
-Product_router.get('/v4/api/get_product_varient/', SellerAuthMiddleware, fetch_Product_By_Id_Or_ProductId)
+Product_router.get(
+  "/v4/api/get_product_varient/",
+  SellerAuthMiddleware,
+  fetch_Product_By_Id_Or_ProductId
+);
 
 //  8 delete product varient
-Product_router.delete('/v4/api/delete/product/varient', SellerAuthMiddleware, DeleteVarients)
+Product_router.delete(
+  "/v4/api/delete/product/varient",
+  SellerAuthMiddleware,
+  DeleteVarients
+);
 
 // 9 update product varient
-Product_router.put('/v4/api/update/product/varient', SellerAuthMiddleware, UpdataVarients)
+Product_router.put(
+  "/v4/api/update/product/varient",
+  SellerAuthMiddleware,
+  UpdataVarients
+);
 
 //  10 Product reviews
-Product_router.post('/v4/api/product/reviews', UserAuthMiddleware, CreateRatings)
+Product_router.post(
+  "/v4/api/product/reviews",
+  UserAuthMiddleware,
+  CreateRatings
+);
 
+Product_router.get("/v4/api/get/similar/product", SimilarProducts);
+Product_router.get("/v4/api/get/sample/product", SampleProducts);
+Product_router.get("/v4/api/products", AllProducts);
 
-Product_router.get('/v4/api/get/similar/product', SimilarProducts)
-Product_router.get('/v4/api/get/sample/product', SampleProducts)
-Product_router.get('/v4/api/products', AllProducts)
+Product_router.post(
+  "/v4/api/get/products/varients/order/history",
+  FetchProductVarientById
+);
 
-Product_router.post('/v4/api/get/products/varients/order/history', FetchProductVarientById)
-
-Product_router.get('/v4/api/products/ratings/review', ReadRatings)
+Product_router.get("/v4/api/products/ratings/review", ReadRatings);
 
 module.exports = Product_router;
