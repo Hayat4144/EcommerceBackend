@@ -1,18 +1,30 @@
-const category_model = require('../model/category_model')
-const slugify = require('slugify')
+const CategoryModal = require("../model/category_model");
+const AsyncFunc = require("../../../utils/AsyncFunc");
+const ErrorHandler = require("../../../utils/ErrorHandler");
 
-
-exports.Create_Category = async (req, res) => {
-    try {
-        const Category_data = {
-            name: req.body.name,
-            slug: slugify(req.body.name)
-        }
-        req.body.parentId ? Category_data.parentId = req.body.parentId : Category_data;
-        await category_model.create(Category_data, (err, data) => {
-            return err ? res.status(400).json({ "error": err }) : res.status(200).json({ 'data': data })
-        })
-    } catch (error) {
-        return res.status(400).json({error})
+const CreateCategory = AsyncFunc(async (req, res, next) => {
+  let { name, parent } = req.body;
+  if (name) name.trim();
+  if (parent) parent.trim();
+  let root_category = "/".trim();
+  let current_category;
+  if (!parent) {
+    parent = root_category;
+    current_category = parent.concat(name);
+  } else {
+    current_category = parent.concat(root_category).concat(name);
+  }
+  CategoryModal.create(
+    {
+      name,
+      parent,
+      category: current_category,
+    },
+    (error, doc) => {
+      if (error) return next(new ErrorHandler(error.message, 400));
+      return res.status(200).json({ data: doc });
     }
-}
+  );
+});
+
+module.exports = CreateCategory;
