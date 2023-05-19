@@ -4,18 +4,16 @@ const CategorySchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: false,
-		max: 20
+		max: 50,
+		unique:true
 	},
-	slug: {
-		type: String,
-		required: true,
-		unique: true
-
+	parent:{
+		type:String,
+		require:true,
 	},
-	parentId: {
-		type: String,
-		required: false,
-
+	category:{
+		type:String,
+		require:true,
 	}
 },
 	{
