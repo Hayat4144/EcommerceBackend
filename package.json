@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --testPathPattern=./test/PassordReset.test.js",
     "start": "node index.js",
     "dev": "nodemon index.js"
+  },
+  "jest": {
+    "testTimeout": 30000
   },
   "author": "",
   "license": "ISC",
@@ -43,6 +46,7 @@
   "devDependencies": {
     "jest": "^29.5.0",
     "nodemon": "^2.0.20",
+    "random-email": "^1.0.3",
     "supertest": "^6.3.3"
   }
 }

@@ -14,7 +14,6 @@ const cors = require("cors");
 const responsetime = require("response-time");
 const BannerRouter = require("./Shop/Banner/router/BannerRouter");
 const stripe = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
-let logger = require("./logger/index");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const xss = require("xss-clean");
@@ -76,14 +75,13 @@ app.get("/mom", (req, res) => {
   return res.status(200).cookie("test", "tesing").json({ name: "hello world" });
 });
 
-app.use(ErrorMiddleware);
-
 app.use(BannerRouter);
+
+app.use(ErrorMiddleware);
 
 //connect database
 Database_Connect().then(() => {
-  logger.info(`node environment is ${process.env.NODE_ENV}`);
   app.listen(process.env.PORT, (err) => {
-    err ? logger.error(err) : logger.info("running at port 5000");
+    err ? console.log(err) : console.info("running at port 5000");
   });
 });
