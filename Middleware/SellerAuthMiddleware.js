@@ -1,49 +1,44 @@
-const jwt = require('jsonwebtoken');
-const fs = require('fs')
-const Seller_Model = require('../Seller/model/SellerModel');
-const ErrorHandler = require('../utils/ErrorHandler')
+const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const Seller_Model = require("../Seller/model/SellerModel");
+const ErrorHandler = require("../utils/ErrorHandler");
+const jwt_signin_verify_option = require("../global/Jwt_verify_signin_option");
 
-
-const SellerAuthMiddleware = (req, res, next) => {
-    const jwt_token =process.env.NODE_ENV === "production" ? req.cookies.token_production : req.cookies.token_dev;
+const SellerAuthMiddleware = async (req, res, next) => {
+  try {
+    const jwt_token =
+      process.env.NODE_ENV === "production"
+        ? req.cookies.token_production
+        : req.cookies.token_dev;
     if (jwt_token === undefined) {
-        return res.status(401).json({ error: "you are unauthorized." })
+      return res.status(401).json({ error: "you are unauthorized." });
     }
-    fs.readFile('./public.pem', 'utf8', async (err, data) => {
-        if (!err) {
-            const verify_option = {
-                expiresIn: "12d",
-                algorithm: ["ES256"]
-            }
-            const verify_token = jwt.verify(jwt_token, data, verify_option)
-            if (verify_token) {
-                await Seller_Model.findById(verify_token.id)
-                    .exec((err, doc) => {
-                        if (err) {
-                            return res.status(400).json({ error: "Sorry you are not authorized." })
-                        }
-                        else {
-                            if (doc === null) {
-                                next(new ErrorHandler('Sorry, you are trying to access private resources which are not allowed. you may be not a seller.', 400))
-                            }
-                            else {
-                                req.user_id = doc._id;
-                                next();
-                            }
-
-                        }
-
-                    })
-            }
-
+    const cert = fs.readFileSync("./public.pem");
+    jwt.verify(
+      jwt_token,
+      cert,
+      jwt_signin_verify_option,
+      async (error, data) => {
+        if (error) {
+          const message =
+            error.name === "JsonWebTokenError"
+              ? "you are unauthorized"
+              : error.message;
+          return next(new ErrorHandler(message, 401));
         }
-        else {
-            console.log(err)
-            throw err;
-        }
-    })
-
-
-}
+        await Seller_Model.findById(data.id).exec((err, doc) => {
+          if (err) return next(new ErrorHandler("you are unauthorised", 401));
+          if (doc === null)
+            next(new ErrorHandler("you data has not been found.", 401));
+          req.user_id = doc._id;
+          req.email = doc.email;
+          next();
+        });
+      }
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 module.exports = SellerAuthMiddleware;
