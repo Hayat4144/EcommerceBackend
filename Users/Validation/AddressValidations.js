@@ -35,7 +35,6 @@ exports.AddressValidation = [
 
 exports.Address_validation_Error = (req, res, next) => {
     const error = validationResult(req);
-    console.log(error)
     if (!error.isEmpty()) {
         res.status(400).send({ error: error.array()[0].msg })
     }
