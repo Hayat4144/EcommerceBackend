@@ -11,7 +11,15 @@ const SellerPasswordTokenSchema = new mongoose.Schema({
         type: String,
         required: true,
         uniqued: true
-    }
+    },
+    expiresAt: {
+        type: Date,
+        default: function () {
+            const currentDate = new Date();
+            const futureDate = new Date(currentDate.getTime() + 10 * 60000); // 10 minutes ahead
+            return futureDate;
+        },
+    },
 },
     {
         timestamps: {
