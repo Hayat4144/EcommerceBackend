@@ -3,6 +3,7 @@ const fs = require("fs");
 const User_Model = require("../Users/Model/UserModel");
 const ErrorHandler = require("../utils/ErrorHandler");
 const jwt_signin_verify_option = require("../global/Jwt_verify_signin_option");
+const logger = require("../utils/Logger");
 
 const UserAuthMiddleware = async (req, res, next) => {
   try {
@@ -30,7 +31,7 @@ const UserAuthMiddleware = async (req, res, next) => {
         await User_Model.findById(data.id).exec((err, doc) => {
           if (err) return next(new ErrorHandler("you are unauthorised", 401));
           if (doc === null)
-            next(new ErrorHandler("you data has not been found.", 401));
+            return next(new ErrorHandler("you data has not been found.", 401));
           req.user_id = doc._id;
           req.email = doc.email;
           next();
@@ -38,7 +39,7 @@ const UserAuthMiddleware = async (req, res, next) => {
       }
     );
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 

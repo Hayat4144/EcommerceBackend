@@ -18,8 +18,11 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
+const logger = require("./utils/Logger");
+
 
 const app = express();
+
 app.use(responsetime());
 app.use(helmet());
 app.use(xss());
@@ -82,6 +85,6 @@ app.use(ErrorMiddleware);
 //connect database
 Database_Connect().then(() => {
   app.listen(process.env.PORT, (err) => {
-    err ? console.log(err) : console.info("running at port 5000");
+    err ? logger.error(err) : logger.info("running at port 5000");
   });
 });
