@@ -15,7 +15,8 @@ exports.SampleProducts = (AsyncFunc(async (req, res, next) => {
                     }
                 }
             }
-        }
+        },
+        {$limit:10}
     ], (error, data) => {
         if (error) return next(new ErrorHandler(error, 400));
         return res.status(200).json({ data })
