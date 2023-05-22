@@ -1,29 +1,36 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-
-const UserPasswordTokenSchema = new mongoose.Schema({
+const UserPasswordTokenSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'user',
-        required: true,
-        unique: true
-
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "user",
+      required: true,
+      unique: true,
     },
     token: {
-        type: String,
-    }
+      type: String,
+    },
+    expiresAt: {
+      type: Date,
+      default: function () {
+        const currentDate = new Date();
+        const futureDate = new Date(currentDate.getTime() + 10 * 60000); // 10 minutes ahead
+        return futureDate;
+      },
+    },
+  },
+  {
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+  }
+);
 
-},
-    {
-        timestamps: {
-            createdAt: 'created_at',
-            updatedAt: 'updated_at'
-        }
-    }
-)
-
-
-
-const UserPasswordTokenModel = new mongoose.model('UserPasswordToken', UserPasswordTokenSchema)
+const UserPasswordTokenModel = new mongoose.model(
+  "UserPasswordToken",
+  UserPasswordTokenSchema
+);
 
 module.exports = UserPasswordTokenModel;
