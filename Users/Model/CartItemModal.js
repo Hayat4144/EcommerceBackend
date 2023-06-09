@@ -21,9 +21,15 @@ const CartItemSchema = new mongoose.Schema({
     max: [500, "You should have to buy maximum 500"],
     min: [5, "You should have to buy atleast 5"],
   },
-  price: {
-    type: Number,
-    required: [true, "Please provide the price"],
+  image: {
+    url: {
+      type: String,
+      required: [true, "image url is required."],
+    },
+    publicId: {
+      type: String,
+      required: [true, "publicId is required."],
+    },
   },
 });
 

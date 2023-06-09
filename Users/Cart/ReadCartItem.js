@@ -8,12 +8,7 @@ const GetCartItem = AsyncFunc(async (req, res, next) => {
     return res.status(400).json({ error: "You don't have any cart Item." });
   const CartItems = await CartItemModel.find({
     CartId: CartExist._id,
-  })
-    .populate({
-      path: "ProductId",
-      select: "name assets price category stock",
-    })
-    .populate("ProductvarientId");
+  });
   if (CartItems.length > 0) return res.status(200).json({ data: CartItems });
   return res.status(400).json({ error: "Cart item does not found." });
 });
