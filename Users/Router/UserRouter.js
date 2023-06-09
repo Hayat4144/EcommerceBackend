@@ -33,8 +33,7 @@ const {
 } = require("../../Seller/validation/ConfirmPasswordValidation");
 // const upload = require('../../utils/upload');
 const { CreateCartItem } = require("../Cart/Cart");
-const { MakeOrder } = require("../Order/MakeOrder");
-const { ConfirmPayment } = require("../Order/ConfirmPayment");
+const ConfirmPayment = require("../Order/ConfirmPayment");
 const {
   OrderValidation,
   MakeOrder_Validation_Error,
@@ -42,6 +41,19 @@ const {
 const { UserOrder } = require("../Order/UserOrder");
 const { Logout } = require("../Auth/Logout");
 const { CheckAuth } = require("../Auth/CheckAuth");
+const {
+  CartValidation,
+  CartValidationError,
+} = require("../Validation/CartItemValidation");
+const GetCartItem = require("../Cart/ReadCartItem");
+const UpdateCartItem = require("../Cart/UpdateCartItem");
+const DeleteCartItem = require("../Cart/DeleteCartItem");
+const {
+  ArrayMongoIdvalidation,
+  ArrayMongoErrors,
+} = require("../Validation/DeleteCartItemValidation");
+const Order = require("../Order/Order");
+const Payment = require("../Order/Payment");
 const UserRouter = express.Router();
 
 UserRouter.get("/hello", (req, res) => {
@@ -66,9 +78,9 @@ UserRouter.get("/v3/is/user/authenticate", UserAuthMiddleware, CheckAuth);
 // 3 Change Password for user
 UserRouter.put(
   "/v3/api/user/change/password",
+  UserAuthMiddleware,
   ConfrimPasswordValidate,
   Confirm_Password_Validation_Error,
-  UserAuthMiddleware,
   UserChangePassword
 );
 
@@ -134,17 +146,55 @@ UserRouter.put(
 // UserRouter.post('/v3/api/user/upload/profile', UserAuthMiddleware, upload.single('avtar'),
 //     UserProfileImage)
 
-UserRouter.post("/v3/api/user/create/cart", UserAuthMiddleware, CreateCartItem);
+UserRouter.post(
+  "/v3/api/user/create/cart",
+  UserAuthMiddleware,
+  CartValidation,
+  CartValidationError,
+  CreateCartItem
+);
+
+UserRouter.get("/v3/api/user/read/cartitem", UserAuthMiddleware, GetCartItem);
+
+UserRouter.put(
+  "/v3/api/user/update/cartitem",
+  UserAuthMiddleware,
+  UpdateCartItem
+);
+
+UserRouter.delete(
+  "/v3/api/user/delete/cartitem",
+  UserAuthMiddleware,
+  ArrayMongoIdvalidation,
+  ArrayMongoErrors,
+  DeleteCartItem
+);
 
 UserRouter.get("/v3/api/user/orders/history", UserAuthMiddleware, UserOrder);
 
 UserRouter.post(
-  "/v3/api/user/shop/order",
+  "/v3/api/user/order",
   OrderValidation,
   MakeOrder_Validation_Error,
   UserAuthMiddleware,
-  MakeOrder
+  Order
 );
+
+UserRouter.post(
+  "/v3/api/order/payment",
+  UserAuthMiddleware,
+  OrderValidation,
+  MakeOrder_Validation_Error,
+  Payment
+);
+
+// UserRouter.post(
+//   "/v3/api/user/shop/order",
+//   OrderValidation,
+//   MakeOrder_Validation_Error,
+//   UserAuthMiddleware,
+//   ProductOrdered
+// );
 
 UserRouter.post(
   "/v3/api/user/shop/confirm/payment",
