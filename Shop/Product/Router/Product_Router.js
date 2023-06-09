@@ -1,6 +1,6 @@
 const express = require("express");
 const { CreateProduct } = require("../Api/CreateProduct");
-const { DeleteProduct } = require("../Api/DeleteProduct");
+const DeleteProduct = require("../Api/DeleteProduct");
 const {
   Get_All_Product,
   GetProductBYCategory,
@@ -10,10 +10,10 @@ const SellerAuthMiddleware = require("../../../Middleware/SellerAuthMiddleware")
 const UserAuthMiddleware = require("../../../Middleware/UserAuthMiddleware");
 const { CreateProductVarient } = require("../Api/varients/CrProductVarient");
 const {
-  Get_All_ProductVarients,
-  fetch_Product_By_Id_Or_ProductId,
   fetchProductVarient,
   FetchProductVarientById,
+  SelllerVarients,
+  SellerVarientsById,
 } = require("../Api/varients/FetchProductVarients");
 const { SimilarProducts } = require("../Api/SimilarProducts");
 const { DeleteVarients } = require("../Api/varients/DltVarients");
@@ -31,7 +31,19 @@ const {
 const {
   SellerReadProduct,
   FetchSellerProduct,
-} = require("../Api/SellerReadProduct");
+} = require("../SellerProducts/SellerReadProduct");
+const {
+  ProductIdValidation,
+  ProductIdError,
+} = require("../Validation/ProductIdValidation");
+const {
+  VarientIdValidation,
+  VrntValidationError,
+} = require("../Validation/VarientIdValidation");
+const {
+  VarientValidation,
+  VarientValidateError,
+} = require("../Validation/VarientValidation");
 const fileupload = multer();
 const Product_router = express.Router();
 
@@ -69,6 +81,8 @@ Product_router.get(
 Product_router.delete(
   "/v4/api/delete/product",
   SellerAuthMiddleware,
+  ProductIdValidation,
+  ProductIdError,
   DeleteProduct
 );
 
@@ -86,27 +100,33 @@ Product_router.get("/v3/api/product/varientById/:id", fetchProductVarient);
 Product_router.post(
   "/v4/api/create/product/varient",
   SellerAuthMiddleware,
+  VarientValidation,
+  VarientValidateError,
   CreateProductVarient
 );
 
-// 6. fetch prduct varient
+// 6. fetch seller prduct varient
 Product_router.get(
   "/v4/api/get_all/product/varients",
   SellerAuthMiddleware,
-  Get_All_ProductVarients
+  SelllerVarients
 );
 
 //  7 . fetch product by varient id or product id
 Product_router.get(
-  "/v4/api/get_product_varient/",
+  "/v4/api/seller/varient",
   SellerAuthMiddleware,
-  fetch_Product_By_Id_Or_ProductId
+  VarientIdValidation,
+  VrntValidationError,
+  SellerVarientsById
 );
 
 //  8 delete product varient
 Product_router.delete(
   "/v4/api/delete/product/varient",
   SellerAuthMiddleware,
+  VarientIdValidation,
+  VrntValidationError,
   DeleteVarients
 );
 
@@ -114,6 +134,8 @@ Product_router.delete(
 Product_router.put(
   "/v4/api/update/product/varient",
   SellerAuthMiddleware,
+  VarientValidation,
+  VarientValidateError,
   UpdataVarients
 );
 

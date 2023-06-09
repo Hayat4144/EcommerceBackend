@@ -13,7 +13,7 @@ exports.ProductValidtion = [
   check("description")
     .escape()
     .trim()
-    .isLength({ min: 4, max: 200 })
+    .isLength({ min: 4, max: 3000 })
     .withMessage("Description should be 4-200 character long."),
   check("price")
     .escape()
