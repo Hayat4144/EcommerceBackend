@@ -34,6 +34,7 @@ const UserAuthMiddleware = async (req, res, next) => {
             return next(new ErrorHandler("you data has not been found.", 401));
           req.user_id = doc._id;
           req.email = doc.email;
+          req.name = data.name;
           next();
         });
       }
