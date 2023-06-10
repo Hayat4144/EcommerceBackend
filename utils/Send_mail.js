@@ -1,8 +1,18 @@
 const nodemailer = require("nodemailer");
-const ErrorHandler = require("./ErrorHandler");
+const fs = require("fs");
+const path = require("path");
+const ejs = require("ejs");
 
-exports.Send_mail = async (email, subject, message) => {
+exports.Send_mail = async (user, subject) => {
   try {
+    const emailTemplate = fs.readFileSync(
+      "template/password-reset-template.html",
+      "utf-8"
+    );
+    const renderedEmail = ejs.render(emailTemplate, {
+      name: user.name,
+      link: user.link,
+    });
     let transporter = nodemailer.createTransport({
       service: process.env.SMTP_SERVICE,
       host: process.env.SMTP_HOST,
@@ -15,9 +25,9 @@ exports.Send_mail = async (email, subject, message) => {
     });
     let mailoption = {
       from: process.env.SMTP_EMAIL_ADDRESSs,
-      to: email,
+      to: user.email,
       subject: subject,
-      html: message,
+      html: renderedEmail,
     };
 
     const info = await transporter.sendMail(mailoption);

@@ -62,24 +62,19 @@ exports.UserPasswordReset = AsyncFunc(async (req, res, next) => {
   }
 
   const doc = await createPasswordToken(req.user_id);
-  const link = `${req.get("origin")}/v2/auth/user/change/password/link/verify/${
-    doc.user
-  }/${doc.token}`;
 
-  const subject = "Email change request";
-  const message = `
-                              <html>
-                                  <body>
-                                  <h3>password Change in Taj Jwellery</h3>
-                                  <h3>Here is link to verify your account : <a href=${link}>Click here to change your password </a></h3>
-                                  </body>
-                              </html>
-                              `;
-  const { info, error } = await Send_mail(
-    IsUserExist[0].email,
-    subject,
-    message
-  );
+
+  const link = `${req.headers.origin}/v2/auth/user/change/password/link/verify/${doc.user}/${doc.token}`;
+
+
+  const user = {
+    name: req.name,
+    email: IsUserExist[0].email,
+    link,
+  };
+
+  const subject = "Password reset request";
+  const { info, error } = await Send_mail(user, subject);
 
   if (error) return next(new ErrorHandler(error.message, 400));
   return res.status(200).json({
