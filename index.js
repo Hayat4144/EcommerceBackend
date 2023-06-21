@@ -13,7 +13,6 @@ const { CloudinaryConfiguration } = require("./Config/Cloudinary_Config");
 const cors = require("cors");
 const responsetime = require("response-time");
 const BannerRouter = require("./Shop/Banner/router/BannerRouter");
-const stripe = require("stripe")(process.env.STRIPE_PUBLISHABLE_KEY);
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const xss = require("xss-clean");

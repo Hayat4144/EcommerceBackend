@@ -51,12 +51,12 @@ class LoggerConfiguration {
       ),
       transports: [
         new transports.Console({ level: "info" }),
-        new transports.File({ filename: "logs/error.log", level: "error" }),
-        new transports.File({ filename: "logs/info.log", level: "info" }),
-        new transports.File({
-          filename: "logs/combind.log",
-          level: "debug",
-        }),
+        // new transports.File({ filename: "logs/error.log", level: "error" }),
+        // new transports.File({ filename: "logs/info.log", level: "info" }),
+        // new transports.File({
+        //   filename: "logs/combind.log",
+        //   level: "debug",
+        // }),
       ],
     });
   }
