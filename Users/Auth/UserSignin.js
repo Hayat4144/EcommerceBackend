@@ -1,3 +1,11 @@
+/**
+ * @typedef {string} FilePath
+ */
+
+/**
+ * Read the contents of a file.
+ * @param {FilePath} filePath - The path to the file.
+ */
 const ErrorHandler = require("../../utils/ErrorHandler");
 const AsyncFunc = require("../../utils/AsyncFunc");
 const UserModel = require("../Model/UserModel");
@@ -27,7 +35,7 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
     };
 
     // read the private key file and sign a token if no error occured
-    fs.readFile("./private.ec.key", "utf-8", (err, data) => {
+    fs.readFile("private.ec.key", "utf-8", (err, data) => {
       if (!err) {
         const token = jwt.sign(payload, data, signOptions);
         if (process.env.NODE_ENV === "production") {
@@ -44,7 +52,9 @@ exports.UserSignin = AsyncFunc(async (req, res, next) => {
           });
         }
 
-        return res.status(200).send({ data: "Login Successfull.", token });
+        return res
+          .status(200)
+          .send({ data: "Login Successfull.", token, ec: data });
       } else {
         logger.error(err);
         next(new ErrorHandler(err, 500));
