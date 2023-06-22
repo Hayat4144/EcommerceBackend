@@ -43,29 +43,34 @@ SellerRouter.put('/v4/api/seller/change/password', ConfrimPasswordValidate,
     Confirm_Password_Validation_Error, SellerAuthMiddleware, ChangePassword)
 
 // 4 Reset password request
-SellerRouter.post('/v4/api/seller/reset/password/request', SellerEmailValidate,
-    Seller_Email_Validation_Error, SellerAuthMiddleware, ResetPasswordRequest)
+SellerRouter.post('/v4/api/seller/reset/password/request', SellerAuthMiddleware, SellerEmailValidate,
+    Seller_Email_Validation_Error, ResetPasswordRequest)
 
 // 4 Verify password reset 
-SellerRouter.put('/v4/api/seller/password/reset/done',
+SellerRouter.put('/v4/api/seller/password/reset/done', SellerAuthMiddleware,
     ConfrimPasswordValidate, Confirm_Password_Validation_Error,
-    SellerAuthMiddleware, VerifySellerPasswordReset)
+    VerifySellerPasswordReset)
 
 
 //  5 email change request 
-SellerRouter.post('/v4/api/seller/email/change/request', SellerEmailValidate,
+SellerRouter.post('/v4/api/seller/email/change/request',
+    SellerAuthMiddleware, SellerEmailValidate,
     Seller_Email_Validation_Error,
-    SellerAuthMiddleware, EmailChangeRequest)
+    EmailChangeRequest)
 
 
 // 6 verify email change token
-SellerRouter.put('/v4/api/seller/email/change/done', SellerConfirmEmailValidate,
-    Seller_Confirm_Email_Validation_Error, SellerAuthMiddleware, VerifySellerEmailChange)
+SellerRouter.
+    put('/v4/api/seller/email/change/done',
+        SellerAuthMiddleware, SellerConfirmEmailValidate,
+        Seller_Confirm_Email_Validation_Error,
+        VerifySellerEmailChange
+    )
 
 
 // 7 user address create 
-SellerRouter.post('/v4/api/seller/create/address', Seller_AddressValidation,
-    Seller_Address_validation_Error, SellerAuthMiddleware, CreateSellerAddress)
+SellerRouter.post('/v4/api/seller/create/address', SellerAuthMiddleware, Seller_AddressValidation,
+    Seller_Address_validation_Error, CreateSellerAddress)
 
 SellerRouter.get('/v4/api/seller/read/address', SellerAuthMiddleware, ReadSelerAddress)
 
@@ -77,9 +82,9 @@ SellerRouter.post('/v4/api/seller/order', SellerAuthMiddleware, SellerOrder)
 
 SellerRouter.get('/v4/api/seller/orderbyId', SellerAuthMiddleware, ReadOrder)
 
-SellerRouter.get('/v4/api/seller/total/orders', SellerAuthMiddleware,TotalOrders)
+SellerRouter.get('/v4/api/seller/total/orders', SellerAuthMiddleware, TotalOrders)
 
-SellerRouter.get('/v4/api/seller/today/orders',SellerAuthMiddleware,TodayOrders);
+SellerRouter.get('/v4/api/seller/today/orders', SellerAuthMiddleware, TodayOrders);
 
 SellerRouter.post('/v4/api/seller/order/update', SellerAuthMiddleware, UpdateOrder)
 // SellerRouter.post('/v3/api/seller/profile/upload', upload.single('avtar'), SellerAuthMiddleware, SellerProfileImage)
