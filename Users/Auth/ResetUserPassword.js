@@ -45,7 +45,7 @@ exports.UserPasswordReset = AsyncFunc(async (req, res, next) => {
   if (IsUserExist.length === 0) {
     return res
       .status(400)
-      .json({ error: `Sorry,$${current_email} does not found.` });
+      .json({ error: `Sorry,${current_email} does not found.` });
   }
 
   const IstokenGenerated = await UserPasswordTokenModel.find({

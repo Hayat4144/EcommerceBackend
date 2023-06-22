@@ -1,7 +1,7 @@
 const { check, validationResult } = require("express-validator");
 
 exports.ConfrimPasswordValidate = [
-  check("newpassword")
+  check("new_password")
     .isStrongPassword({
       minLength: 8,
       minLowercase: 1,
@@ -21,9 +21,7 @@ exports.ConfrimPasswordValidate = [
         return value;
       }
     }),
-  check("currentpassword")
-    .isLength({min:1})
-    .withMessage(`old password can't be empty.`)
+  check("token").isUUID().withMessage("invalid security token"),
 ];
 
 exports.Confirm_Password_Validation_Error = (req, res, next) => {
