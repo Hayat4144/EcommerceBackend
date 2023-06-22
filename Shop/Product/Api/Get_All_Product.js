@@ -94,11 +94,13 @@ exports.Get_All_Product = async (req, res, next) => {
 
     // category search
     const CategorySeach = async () => {
-      const categoryRegex = new RegExp(`^${category}`);
+      const categoryRegex = new RegExp(`^${category}`, "gi");
 
       const getCategoryPaths = async () => {
         const categories = await category_model
-          .find({ parent: categoryRegex })
+          .find({
+            $or: [{ parent: categoryRegex }, { category: categoryRegex }],
+          })
           .select("category");
         const path = categories.map((cat) => cat.category);
         return path;
@@ -108,6 +110,7 @@ exports.Get_All_Product = async (req, res, next) => {
         const products = await Product_Model.find({
           category: { $in: categoryPaths },
           average_rating: { $gte: Number(Star), $lte: 5 },
+          price: Price,
         })
           .sort(SortIn)
           .skip(pagination(20))
