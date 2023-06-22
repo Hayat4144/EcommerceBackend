@@ -71,7 +71,7 @@ UserRouter.post(
 // 2 Sigin for user
 UserRouter.post("/v3/api/user/signin", UserSignin);
 
-UserRouter.get("/v3/api/user/logout", UserAuthMiddleware, Logout);
+UserRouter.delete("/v3/api/user/logout", UserAuthMiddleware, Logout);
 
 UserRouter.get("/v3/is/user/authenticate", UserAuthMiddleware, CheckAuth);
 
