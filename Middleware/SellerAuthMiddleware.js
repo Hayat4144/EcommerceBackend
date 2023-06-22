@@ -13,7 +13,8 @@ const SellerAuthMiddleware = async (req, res, next) => {
     if (jwt_token === undefined) {
       return res.status(401).json({ error: "you are unauthorized." });
     }
-    const cert = fs.readFileSync("./public.pem");
+    const file = path.join(process.cwd(), "public.pem");
+    const cert = fs.readFileSync(file);
     jwt.verify(
       jwt_token,
       cert,
