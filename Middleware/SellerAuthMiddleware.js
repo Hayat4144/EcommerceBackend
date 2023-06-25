@@ -3,6 +3,7 @@ const fs = require("fs");
 const Seller_Model = require("../Seller/model/SellerModel");
 const ErrorHandler = require("../utils/ErrorHandler");
 const jwt_signin_verify_option = require("../global/Jwt_verify_signin_option");
+const path = require("path");
 
 const SellerAuthMiddleware = async (req, res, next) => {
   try {
