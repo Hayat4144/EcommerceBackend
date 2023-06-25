@@ -1,15 +1,28 @@
 const OrderModal = require("../../Users/Model/OrderModal");
 const AsyncFunc = require("../../utils/AsyncFunc");
-const ErrorHandler = require('../../utils/ErrorHandler')
+const ErrorHandler = require("../../utils/ErrorHandler");
+const logger = require("../../utils/Logger");
+const Pagination = require("../../utils/Pagination");
 
 exports.SellerOrder = AsyncFunc(async (req, res, next) => {
-    let { from, to } = req.body;
-    from = new Date(from).toISOString();
-    to = new Date(to).toISOString();
-    OrderModal.find({ 'products.seller': req.user_id, "date": { $gte: from, $lte: to } }).exec((err, doc) => {
-        if (err) return next(new ErrorHandler(err.message, 400));
-        console.log(doc);
-        if (doc.length === 0) return res.status(404).json({ data: 'No order data found' });
-        return res.status(200).json({ data: doc })
-    })
-})
+  let { from, to, page } = req.body;
+  from = new Date(new Date(from)).setUTCHours(0, 0, 0, 0);
+  to = new Date(new Date(to)).setUTCHours(23, 59, 59, 999);
+  const OrderData = await OrderModal.find({
+    "products.seller": req.user_id,
+    date: { $gte: from, $lte: to },
+  })
+    .limit(5)
+    .skip(Pagination(page, 5));
+
+  if (OrderData.length < 1) {
+    return res.status(400).json({ data: "No order has been found" });
+  }
+  const getCountDocuments = await OrderModal.countDocuments({
+    "products.seller": req.user_id,
+    date: { $gte: from, $lte: to },
+  });
+  return res
+    .status(200)
+    .json({ data: OrderData, totalOrders: getCountDocuments });
+});
