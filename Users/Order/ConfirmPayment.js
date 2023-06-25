@@ -15,6 +15,11 @@ const ConfirmPayment = AsyncFunc(async (req, res, next) => {
         $set: { paymentStatus: "paid", payment_intentId: confirmpayment.id },
       }
     );
+  } else {
+    const UpdateOrder = await OrderModal.findByIdAndUpdate(
+      confirmpayment.metadata.order_id,
+      { $set: { paymentStatus: "failed", payment_intentId: confirmpayment.id } }
+    );
   }
   return res.status(200).json({ data: confirmpayment });
 });
