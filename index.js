@@ -19,7 +19,6 @@ const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const logger = require("./utils/Logger");
 
-
 const app = express();
 
 app.use(responsetime());
@@ -45,7 +44,7 @@ app.use(
             "https://frontend-hayat4144.vercel.app",
             "https://dashboard-hayat4144.vercel.app",
           ]
-        : "http://localhost:5173",
+        : ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
     optionsSuccessStatus: 200,
   })
