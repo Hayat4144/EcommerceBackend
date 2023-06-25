@@ -28,10 +28,11 @@ const SellerAuthMiddleware = async (req, res, next) => {
               : error.message;
           return next(new ErrorHandler(message, 401));
         }
+        console.log(data);
         await Seller_Model.findById(data.id).exec((err, doc) => {
           if (err) return next(new ErrorHandler("you are unauthorised", 401));
           if (doc === null)
-            next(new ErrorHandler("you data has not been found.", 401));
+           return next(new ErrorHandler("you data has not been found.", 401));
           req.user_id = doc._id;
           req.email = doc.email;
           next();
