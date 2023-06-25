@@ -70,7 +70,7 @@ exports.Get_All_Product = async (req, res, next) => {
             $facet: {
               result: [
                 { $skip: pagination(20) },
-                { $limit: 10 },
+                { $limit: 20 },
                 { $sort: SortIn },
               ],
               total_result: [
