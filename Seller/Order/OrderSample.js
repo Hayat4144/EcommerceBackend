@@ -8,6 +8,8 @@ exports.SellerOrder = AsyncFunc(async (req, res, next) => {
   let { from, to, page } = req.body;
   from = new Date(new Date(from)).setUTCHours(0, 0, 0, 0);
   to = new Date(new Date(to)).setUTCHours(23, 59, 59, 999);
+
+  // find orders based on the data and add pagination 
   const OrderData = await OrderModal.find({
     "products.seller": req.user_id,
     date: { $gte: from, $lte: to },
